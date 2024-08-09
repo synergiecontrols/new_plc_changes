@@ -1,0 +1,98 @@
+
+
+{% extends "base.html" %}
+
+{% block title %}Today Production{% endblock %}
+
+{% block content %}
+<div class="main">
+    <div class="unsubmit-main" style="min-height: 70vh;">
+        <h4 style="margin-left:3%; margin-top:10px ;color: brown;">Un-approved Event</h4>
+        <hr>
+        <div class="table-container">
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Event Name</th>
+                    <th>Event Start</th>
+                    <th>Event Stop</th>
+                    <th>Department</th>
+                    <th>Area</th>
+                    <th>Reason</th>
+                    <th>Remark</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody> 
+                {% for event in events %}
+                <tr>
+                    <td>{{ event.id }}</td>
+                    <td>{{ event.event_name }}</td>
+                    <td>{{ event.event_start }}</td>
+                    <td>{{ event.event_stop }}</td>
+                    <td>{{ event.department }}</td>
+                    <td>{{ event.event_area }}</td>
+                    <td>{{ event.reason }}</td>
+                    <td>
+                        <button class="btn btn-warning" id="myButtonremark{{ event.id }}">Remark</button>
+                        <div id="myPopup{{ event.id }}" class="popup">
+                            <div class="popup-content">
+                                <div class="remark-popup-heading">
+                                    <button class="closepopupbutton" id="closePopup{{ event.id }}">
+                                        &#10006;
+                                    </button>
+                                </div>
+                                <div class="remarkinputarea">
+                                    <textarea id="remarkinput{{ event.id }}" name="textarea" rows="5" cols="30" placeholder="Please give your remarks here..."></textarea> 
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <form method="post" action="{{ url_for('handle_event_action', event_id=event.id) }}">
+                            {{ form.hidden_tag() }}
+                            <input type="hidden" name="remark" id="hidden_remark{{ event.id }}">
+                            <button type="submit" name="action" value="approve" class="btn btn-info">Approve</button>
+                            <button type="submit" name="action" value="reject" class="btn btn-danger">Reject</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        {% for event in events %}
+        (function(eventId) {
+            let myButton = document.getElementById("myButtonremark" + eventId);
+            let myPopup = document.getElementById("myPopup" + eventId);
+            let closePopup = document.getElementById("closePopup" + eventId);
+            let hiddenRemark = document.getElementById("hidden_remark" + eventId);
+            let remarkInput = document.getElementById("remarkinput" + eventId);
+    
+            if (myButton && myPopup && closePopup && hiddenRemark && remarkInput) {
+                myButton.addEventListener("click", function() {
+                    myPopup.classList.add("show");
+                });
+    
+                closePopup.addEventListener("click", function() {
+                    myPopup.classList.remove("show");
+                });
+    
+                // When the form is submitted, update the hidden input with the remark value
+                document.querySelector('form[action="{{ url_for('handle_event_action', event_id=event.id) }}"]').addEventListener("submit", function() {
+                    hiddenRemark.value = remarkInput.value;
+                });
+            }
+        })({{ event.id }});
+        {% endfor %} 
+        });
+    </script>
+    
+{% endblock %}
+

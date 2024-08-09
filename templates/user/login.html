@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Submit Event{% endblock %}
+
+{% block content %}
+
+<div class="main">
+    <div class="user-main -main" style="min-height: 70vh;">
+        <form class="user-form-container-login" method="POST" action="{{ url_for('login') }}">
+            {{ form.hidden_tag() }}
+            <div>
+                <div class="user-heading">
+                    <h4 style="margin-left:3%; margin-top:10px ;color: brown;">Log In</h4>
+                </div>
+               
+                <hr>
+              
+                <div class="form-field">
+                    <label for="email">{{ form.email.label }}</label>:
+                   {{ form.email(size=32) }}
+                    {% for error in form.email.errors %}
+                    <span style="color: red; padding-left: 20%;" >*{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-field">
+                    <label for="password">{{ form.password.label }}</label>:
+              {{ form.password(size=32) }}
+                    {% for error in form.password.errors %}
+                    <span style="color: red; padding-left: 20%;" >*{{ error }}</span>
+                    {% endfor %}
+                </div>
+              
+            </div>
+            <div class="submit-button">
+                <!-- Use Bootstrap button markup -->
+                <button class="btn btn-info" type="submit">{{ form.submit.label }}</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

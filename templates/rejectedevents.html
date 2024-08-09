@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}Today Production{% endblock %}
+
+{% block content %}
+<div class="main">
+    <div class="unsubmit-main" style="min-height: 70vh;">
+        <h4 style="margin-left:3%; margin-top:10px ;color: brown;">Rejected Events</h4>
+    <hr>
+    <div class="table-container">
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Event Name</th>
+                <th>Event Start</th>
+                <th>Event Stop</th>
+                <th>Rejected by</th>
+                <th>Department</th>
+                <th>Reason</th>
+                <th>Remark for events</th>
+                <th>Action</th>
+               
+                {% if current_user.role == 'planthead' or current_user.role == 'admin' %}
+                <th>Assign to</th>
+               {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+    
+            <tr>
+                <td>{{ event.id }}</td>
+                <td>{{ event.event_name }}</td>
+                <td>{{ event.event_start|format_datetime }}</td>
+                <td>{{ event.event_stop|format_datetime }}</td>
+
+                <td>{% if event.rejected_by_l4 %}
+                    {{ event.rejected_by_l4.name }}
+                  {% elif event.rejected_by_l3 %}
+                    {{ event.rejected_by_l3.name }}
+                  {% elif event.rejected_by_l2 %}
+                    {{ event.rejected_by_l2.name }}
+                  {% elif event.rejected_by_l1 %}
+                    {{ event.rejected_by_l1.name }}
+              
+                  {% endif %}</td>
+                  
+                  
+               
+             
+
+                <td>{{ event.department }}</td>
+                <td>{{ event.reason }}</td>
+
+
+                
+
+            </td>
+            
+            
+            <td>
+                <button class="btn btn-warning" id="myButtonremark{{ event.id }}">Read Remark</button>
+              <div id="myPopup{{ event.id }}" class="popup">
+                  <div class="popup-content">
+                      <div class="popup-heading">
+                          <button class="closepopupbutton" id="closePopup{{ event.id }}">
+                              &#10006;
+                          </button>
+                      </div>
+                      <div class="inputarea">
+                          <textarea id="remarkinput{{ event.id }}" name="textarea" rows="5" cols="30"  readonly>{{ event.remark }}</textarea>
+                      </div>
+                  </div>
+              </div>
+          
+              <script>
+                  document.addEventListener("DOMContentLoaded", function() {
+                      const myButton = document.getElementById("myButtonremark{{ event.id }}");
+                      const myPopup = document.getElementById("myPopup{{ event.id }}");
+                      const closePopup = document.getElementById("closePopup{{ event.id }}");
+          
+                      // Adding event listener for button click
+                      myButton.addEventListener("click", function() {
+                          myPopup.classList.add("show");
+                      });
+          
+                      // Remove pop-up after clicking close button
+                      closePopup.addEventListener("click", function() {
+                          myPopup.classList.remove("show");
+                      });
+                  });
+              </script>
+              </td>
+
+
+              {% if 'admin' or "electrichead" or "operationalhead" or "mechanicalhead" in current_user.role%}
+              <td> <form method="post" action="{{ url_for('handle_event_action', event_id=event.id) }}">
+                {{ form.hidden_tag() }}
+
+                <button type="submit" name="action" value="approve" class="btn btn-info">Approve</button>
+                <button type="submit" name="action" value="reject" class="btn btn-danger">Reject</button>
+            </form>
+            
+                {% endif %}
+             </td>
+
+
+
+                {% if current_user.role == 'planthead' or  current_user.role == 'admin'%}
+                <td>
+                <form action="{{ url_for('assign_to_other_department', event_id=event.id) }}"  method="post">
+                    {{ form.hidden_tag() }}
+                <select class="select-class" id="department" name="new_department">
+                    <option value="">Select Department</option>
+                    <option value="electrical" >Electrical</option>
+                    <option value="mechanical">Mechanical</option>
+                    <option value="operational">Operational</option>
+                   
+                </select>
+                <button type="submit" class="btn btn-success" style="margin-top: 5px;">Assign</button></td>
+            </form>
+               {% endif %}
+
+               
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>
+</div>
+{% endblock %}

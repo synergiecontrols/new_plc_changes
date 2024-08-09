@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Today Production{% endblock %}
+
+{% block content %}
+
+<div class="main main-body">
+
+    <div class="profilecard">
+      <div class="profilecard-bg">
+        <div class="img-bx">
+            <img src="/static/images/default.jpg" alt="img" />
+        </div>
+        <div class="content">
+            <div class="detail">
+                <h2>{{ user.name }}<br /><span>{{ user.role }}</span></h2>
+                <p>{{ user.email }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+    {% if current_user.role != 'operator' %}
+        <div class="myevent">
+            <div class="unsubmit-main">
+                <div class="profile-heading">Events Rejected by Me</div>
+                <hr>
+                <table >
+                    <thead>
+                        <tr>
+                            <th>Event Name</th>
+                            <th>Event Start</th>
+                            <th>Event Stop</th>
+                            <th>Delay Time</th>
+                            <th>Area</th>
+                            <th>Department</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in rejected_events_by_self %}
+                            <tr>
+                                <td>{{ event.event_name }}</td>
+                                <td>{{ event.event_start }}</td>
+                                <td>{{ event.event_stop }}</td>
+                                <td>{{ event.time_delay }}</td>
+                                <td>{{ event.event_area }}</td>
+                                <td>{{ event.department }}</td>
+                                <td>{{ event.reason }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="myevent">
+            <div class="profile-heading">Events Accepted by Me</div>
+            <hr>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Event Name</th>
+                        <th>Event Start</th>
+                        <th>Event Stop</th>
+                        <th>Delay Time</th>
+                        <th>Area</th>
+                        <th>Department</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in approved_events_by_self %}
+                        <tr>
+                            <td>{{ event.event_name }}</td>
+                            <td>{{ event.event_start }}</td>
+                            <td>{{ event.event_stop }}</td>
+                            <td>{{ event.time_delay }}</td>
+                            <td>{{ event.event_area }}</td>
+                            <td>{{ event.department }}</td>
+                            <td>{{ event.reason }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

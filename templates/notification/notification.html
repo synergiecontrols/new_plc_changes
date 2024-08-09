@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Today Production{% endblock %}
+
+{% block content %}
+<div class="main">
+    <div class="notification-main">
+        <div class="dashboard-header">
+            <div  style="padding-top: 1rem;font-size: large; padding-left: 0.5rem;"> My Plant activities</div>
+        </div>
+        <hr class="dashboard-heading">
+        <ul class="list-group">
+          
+          {% for msg in notification %}
+            <li class="list-group-item list-group-item-info notification-card">{{msg.notification_msg}}</li>
+
+            {% endfor %}
+
+           
+          </ul>
+
+    </div>
+
+
+
+</div>
+{% endblock %}

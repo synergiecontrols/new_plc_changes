@@ -1,0 +1,75 @@
+
+{% extends "base.html" %}
+
+{% block title %}Delay report{% endblock %}
+  
+
+  {% block content %}
+
+
+
+<div class="main">
+    <h4 style="margin-left:3%; margin-top:10px ;color: brown;">Other departments Delay report for Yesterday</h4>
+      
+      <hr class="dashboard-heading">
+
+       <div class="delaybuttons">
+        <a  href="delayreport" type="button" class="btn btn-outline-info " style="color:black">cummulative</a>
+        <a  href="delayreportOperation" type="button" class="btn btn-outline-info" style="color:black">Operation</a>
+        <a href="delaymechanical" type="button" class="btn btn-outline-info" style="color:black">mechanical</a>
+        <a href="delaytechnical" type="button" class="btn btn-outline-info" style="color:black">electrical</a>
+        <a href="delayother" type="button" class="btn btn-outline-info active" style="color:black">other</a>
+   
+       </div>
+       <div class="delay-main">
+       <table>
+        <thead>
+            <tr>
+                <th>Event Name</th>
+                <th>Time Start</th>
+                <th>Time End</th>
+                <th>Time Delay</th>
+                <th>Area</th>
+                <th>Reason</th>
+                <th>Agency</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in report %}
+            {%  if event.department =='other' %}
+            <tr>
+                <td>{{ event.event_name }}</td>
+                <td>{{ event.event_start }}</td>
+                <td>{{ event.event_stop }}</td>
+                {% if event.time_delay < 60 %}
+                <td>{{ event.time_delay | int }} sec</td>
+            {% else %}
+                {% set minutes = event.time_delay // 60 %}
+                {% set seconds = event.time_delay % 60 %}
+                <td>{{ minutes | int }} min {{ seconds | int }} sec</td>
+            {% endif %}
+                <td>{{ event.event_area }}</td>
+                <td>{{ event.reason}}</td>
+                <td>{{ event.department }}</td>
+    
+            </tr>
+            {% endif %}
+            {% endfor %}
+            <!-- Add more rows as needed -->
+        </tbody>
+    </table>
+  </div>
+
+
+  <form action="/download_delay_report" method="post">
+    {{ form.hidden_tag() }}
+    <button type="submit"  class="btn btn-info">Generate Excel File</button>
+</form>
+
+
+  
+
+  </div>
+
+
+  {% endblock %}

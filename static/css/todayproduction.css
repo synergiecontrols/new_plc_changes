@@ -1,0 +1,472 @@
+  /* Global styles */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-family); /* Use custom font family */
+  }
+
+
+
+.main{
+    
+    height: 100%;
+    min-height: 80vh;
+    border: 2px solid #63b5c561;
+    padding: 0rem 1rem 1rem 1rem;
+    border-radius: 10px;
+    background: #c5f5ff73;
+    /* background: #4592c5; */
+}
+
+.dashboard-heading{
+    border: 2px solid #fff;
+}
+
+.dashboard-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding:0 2rem ;
+    color: steelblue;
+
+}
+
+
+
+
+/* -----------------------Production-card */
+
+.heading-card {
+    font-size: 1.5rem;
+    padding: 5px 0px;
+    color: steelblue;
+    font-weight: 700;
+    text-align: center;
+}
+
+.card-production hr{
+    padding: 0;
+    margin: 0;
+    color: steelblue;
+    height: 2px;
+    filter: blur(1px);
+}
+
+
+.card-production{
+    position:relative ;
+    width: 100%;
+    height: 15rem;
+    border-radius: 6px;
+    background-color:lightcyan;
+    box-shadow: 8px 10px 8px rgb(0 0 0 / 23%);
+    border: 1px solid rgb(196, 221, 221);
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+  
+    align-items: center;
+    transition: transform 0.6s ease, top 0.6s ease, left 0.6s ease, z-index 0.6s ease; /* Add transition for smooth animation */
+}
+
+.card-production .rating{
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.card-production .block{
+    top: 5%;
+    position: absolute;
+    width: 0.1rem;
+    height: 1.5rem;
+    background : gray;
+    /**/
+    left: 50%;
+    /* transform: rotate(25deg); */
+    transform-origin: 50% 5rem;
+
+
+}
+.card-production .rating h2{
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    color: #343a40;
+    font-size: 1.5em;
+    font-weight: 500;
+    text-align: center;
+ 
+}
+h2 span{
+    font-size: 1.5em;
+
+}
+
+/* ----Animation */
+
+.card-production .rating .block{
+    animation: animate 0.1s linear forwards;
+    opacity: 0;
+}
+
+@keyframes animate {
+
+    to{
+        opacity: 1;
+    }
+
+
+    
+}
+
+.card-production .block.highlight {
+    
+    background: linear-gradient(to bottom, rgb(218, 103, 213),rgb(23, 106, 173)); 
+
+
+}
+
+  
+.total-time{
+    position: absolute;
+    top:80%;
+    left:80%;
+    padding:0.2rem;
+    border:0.1px solid rgb(166, 216, 230);
+    background-color: #fff;
+    border-radius: 4px;
+
+}
+
+.card-production:hover::after {
+    content: attr(data-title); /* Display the value of the data-title attribute as tooltip content */
+    position: absolute; /* Position the tooltip absolutely */
+    bottom: 102%; /* Position above the card */
+    left: 15%; /* Position from the left */
+    padding: 5px 10px; /* Padding for the tooltip */
+    background: rgb(154, 208, 247); /* Background color of the tooltip */
+    color: rgb(0, 0, 0); /* Text color of the tooltip */
+    border-radius: 5px; /* Rounded corners */
+    white-space: nowrap; /* Prevents text from wrapping */
+    z-index: 1; /* Ensure tooltip appears above other elements */
+    opacity: 0; /* Initially hide the tooltip */
+    transition: opacity 0.3s ease; /* Add smooth transition effects */
+}
+
+.card-production:hover::after {
+    opacity: 1; /* Show the tooltip on hover */
+ 
+}
+.card-production:hover{
+
+    transform: scale(1.05); /* Magnify the card 1.05 times on hover */
+}
+
+
+
+.cobble {
+    font-size: 2rem;
+    font-weight: 500;
+    text-align: center;
+    margin-left: 8%;
+    padding-top: 2rem;
+    color: #ff1010;
+    animation: glow 1s infinite alternate;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
+    /* You can adjust the animation duration and other properties as needed */
+}
+
+@keyframes glow {
+    0% {
+        text-shadow: 0 0 10px rgba(239, 46, 46, 0.5); /* Initial shadow */
+    }
+    100% {
+        text-shadow: 0 0 25px rgba(249, 65, 65, 0.8); /* Final shadow */
+    }
+}
+
+
+
+
+@media screen and (max-width: 700px) {
+
+    #myChart1{
+    width:auto;
+    height:230px;
+
+    }
+
+    .heading-card{
+        font-size: 1rem;
+    }
+
+  }
+
+
+/* ------------------------------------------------------card-production2---------------------------- */
+.card-production-charts{
+    height: 20rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------card-production2- end---------------------------- */
+
+.cobble {
+  position: absolute;
+  font-size: 2.5rem;
+  padding: 28px;
+  padding-right: 4rem;
+  font-weight: 500;
+  top: 5rem;
+  color: #ff1010;
+  animation: glow 1s infinite alternate;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+
+    /* You can adjust the animation duration and other properties as needed */
+}
+
+@keyframes glow {
+    0% {
+        text-shadow: 0 0 10px rgba(239, 46, 46, 0.5); /* Initial shadow */
+    }
+    100% {
+        text-shadow: 0 0 25px rgba(249, 65, 65, 0.8); /* Final shadow */
+    }
+}
+
+
+.cobble-count{
+    display: flex;
+    place-items: center;
+    align-items: center;
+
+    margin-top: 2%;
+    justify-content: center;
+}
+
+.circle1
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height:10rem;
+    width:10rem;
+    border-radius: 50%;
+    border: 3px solid #fe444425;
+    filter: blur(border);
+    border-top:5px solid red;
+    animation:ani 3s linear infinite;
+
+}
+
+.circle2{
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height:7rem;
+    width:7rem;
+    border-radius: 50%;
+    border: 3px solid #cdb75c25;
+    border-top:5px solid rgb(209, 220, 53);
+    animation:ani 3s linear infinite;
+}
+
+@keyframes ani{
+    0%{
+        transform :rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ---------- pop up show*/
+
+.popup {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(82, 165, 228, 0.4);
+    display: none;
+  }
+  .popup-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 10px;
+    border: 1px solid #888888;
+    width: 30%;
+    font-weight: bolder;
+  }
+  
+  .show {
+    display: block;
+  }
+  
+  
+  .popup-heading {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    justify-content: space-between;
+    color: red;
+  }
+  
+  .closepopupbutton{
+    color: red;
+    padding :2px;
+    font-weight: 600;
+    border: none;
+    background-color: none;
+  }
+  
+  .operatorfield{
+  
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  .operatorfield select {
+    width: 60%;
+    padding: 5px;
+    border-radius: 6px;
+    margin-right: 10%;
+  }
+  
+  
+  
+  
+  #reasonInputContainer {
+    
+  
+    display: none;
+  }
+  
+  
+  input{
+    width: 60%;
+    margin-left: 30%;
+    border-radius: 6px;
+    padding:2px;
+  }
+
+
+  .submitbutton{
+    width: auto;
+    display: flex;
+  
+    padding: 10px 5px;
+    
+    justify-content: center;
+  
+  }
+
+  .submitbutton a{
+    text-decoration: none;
+    border: 2px solid red;
+    padding: 10px 5px;
+    border-radius: 4px;
+
+  }
+  
+  .submitbutton a:hover{
+    background-color: #2cbc5c;
+    border: 2px solid rgb(177, 101, 101);
+    color: black;
+
+
+  }
+
+
+
+
+
+
+
+
+
+  /* flip card------------------------------------------ */
+  .table-wrapper {
+    margin-top: 10%;
+    width: 90%; /* Adjust width as necessary */
+    overflow-x: auto;
+    margin-left: 5%;
+    margin-right: 5%;
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: #1fd2e6 white; /* For Firefox */
+  }
+
+  /* WebKit browsers */
+  .table-wrapper::-webkit-scrollbar {
+    height: 12px;
+  }
+  .table-wrapper::-webkit-scrollbar-track {
+    background:white;
+  }
+  .table-wrapper::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+    border: 3px solid white;
+  }
+  .production-table {
+    width: 100%; /* Makes the table take full width inside the wrapper */
+    border-collapse: collapse; /* Optional: improves the table appearance */
+    color:rgb(0, 0, 0);
+    
+  }
+  .production-table th, .production-table td {
+    border: 1px solid black; /* Optional: add border for clarity */
+    padding: 8px; /* Optional: add padding for readability */
+    text-align: center; /* Optional: center align the text */
+    background-color: aquamarine;
+  }

@@ -1,0 +1,88 @@
+.table-container{
+
+    overflow-y: auto; /* Add vertical scroll */
+    overflow-x: auto; /* Add horizontal scroll */
+    border: 1px solid #ddd; /* Optional: Add border for better visual */
+}
+
+
+/* Style the scrollbar for WebKit browsers */
+.table-container::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+    height: 12px; /* Height of the scrollbar */
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Color of the scrollbar track */
+    border-radius: 10px; /* Rounded corners for the track */
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: #1d6291; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners for the thumb */
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: #1d6291; /* Color of the scrollbar thumb when hovered */
+}
+
+/* Style the scrollbar for Firefox */
+.table-container {
+    scrollbar-width: thin; /* Make scrollbar thinner */
+    scrollbar-color:#1d6291 #f1f1f1; /* Set thumb and track colors */
+}
+
+table {
+    width: 100%;
+
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    
+}
+th {
+    background-color: #f2f2f2;
+}
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.delaybuttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+}
+.delaybuttons a {
+    margin: 5px;
+    padding: 10px 50px;
+ 
+}
+
+.delay-main{
+    min-height: 50vh;
+}
+
+
+@media (max-width: 768px) {
+    .delaybuttons a {
+        margin: 5px;
+        padding: 10px;
+        width: calc(33% - 10px); /* Six buttons per row for screens wider than 768px */
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    th, td {
+        white-space: nowrap;
+    }
+ 
+}

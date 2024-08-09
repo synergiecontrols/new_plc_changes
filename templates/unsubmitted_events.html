@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Today Production{% endblock %}
+
+{% block content %}
+<div class="main">
+    <div class="unsubmit-main" style="min-height: 70vh;">
+        <h4 style="margin-left:3%; margin-top:10px ;color: brown;">Un-Submitted Event</h4>
+    <hr>
+    <div class="table-container">
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Event Name</th>
+                <th>Event Start</th>
+                <th>Event Stop</th>
+                <th>Department</th>
+                <th>Reason</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+            <tr>
+                <td>{{ event.id }}</td>
+                <td>{{ event.event_name }}</td>
+                <td>{{ event.event_start }}</td>
+                <td>{{ event.event_stop }}</td>
+                <td>{{ event.department }}</td>
+                <td>{{ event.reason }}</td>
+                <td><a href="{{ url_for('submit_event_form', event_id=event.id) }}"><button type="submit" value="Submit" class="btn btn-info">Submit</button></a>
+                    
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>
+</div>
+{% endblock %}

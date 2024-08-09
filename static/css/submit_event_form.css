@@ -1,0 +1,51 @@
+.submit-main {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+    height:60vh;
+}
+
+.form-container{
+    padding: 20px;
+    display: flex;
+    width: 60vh;
+    height: 60vh;
+    border: 1px solid black;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: stretch;
+    border-radius: 6px;
+    background-color: lightyellow;
+
+}
+
+.form-container button{
+    margin-left: 40%;
+    padding-left: 5%;
+
+
+}
+
+
+
+
+/* remark pop up css */
+.remarkinputarea{
+    width: 60%;
+    border-radius: 6px;
+    padding:2px;
+    display: inline;
+  }
+  
+  textarea {
+    resize: vertical;
+    width: 100%;
+    height: 10vh;
+  }
+  
+  
+  .remark-popup-heading {
+    display: flex; 
+    justify-content: flex-end;
+  }
+  

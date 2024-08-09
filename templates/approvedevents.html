@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Today Production{% endblock %}
+
+{% block content %}
+<div class="main">
+  <div class="unsubmit-main" style="min-height: 70vh;">
+    <h4 style="margin-left:3%; margin-top:10px ;color: brown;">Approved Event</h4>
+<hr>
+<div class="table-container">
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Event Name</th>
+                <th>Event Start</th>
+                <th>Event Stop</th>
+                <th>Approved by</th>
+                <th>Department</th>
+                <th>Reason</th>
+                <th>Remark</th>
+       
+               
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+    
+            <tr>
+                <td>{{ event.id }}</td>
+                <td>{{ event.event_name }}</td>
+                <td>{{ event.event_start|format_datetime }}</td>
+                <td>{{ event.event_stop|format_datetime }}</td>
+
+                <td>{% if event.approved_by_l4 %}
+                    {{ event.approved_by_l4.name }}
+                  {% elif event.approved_by_l3 %}
+                    {{ event.approved_by_l3.name }}
+                  {% elif event.approved_by_l2 %}
+                    {{ event.approved_by_l2.name }}
+                  {% elif event.approved_by_l1 %}
+                    {{ event.approved_by_l1.name }}
+              
+                  {% endif %}</td>
+
+                <td>{{ event.department }}</td>
+                <td>{{ event.reason }}</td>
+                <td>
+                  <button class="btn btn-warning" id="myButtonremark{{ event.id }}">Read Remark</button>
+                <div id="myPopup{{ event.id }}" class="popup">
+                    <div class="popup-content">
+                        <div class="popup-heading">
+                            <button class="closepopupbutton" id="closePopup{{ event.id }}">
+                                &#10006;
+                            </button>
+                        </div>
+                        <div class="inputarea">
+                            <textarea id="remarkinput{{ event.id }}" name="textarea" rows="5" cols="30"  readonly>{{ event.remark }}</textarea>
+                        </div>
+                    </div>
+                </div>
+            
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        const myButton = document.getElementById("myButtonremark{{ event.id }}");
+                        const myPopup = document.getElementById("myPopup{{ event.id }}");
+                        const closePopup = document.getElementById("closePopup{{ event.id }}");
+            
+                        // Adding event listener for button click
+                        myButton.addEventListener("click", function() {
+                            myPopup.classList.add("show");
+                        });
+            
+                        // Remove pop-up after clicking close button
+                        closePopup.addEventListener("click", function() {
+                            myPopup.classList.remove("show");
+                        });
+                    });
+                </script>
+                </td>
+    
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>
+</div>
+{% endblock %}

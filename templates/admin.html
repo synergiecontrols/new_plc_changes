@@ -1,0 +1,290 @@
+
+{% extends "base.html" %}
+
+{% block title %}Admin Panel{% endblock %}
+  <!-----------------------------------dashboard.html / home.html-----------------------------------------container------------------------ ------------------------------- -->
+  
+
+  {% block content %}
+
+
+  <div class="main">
+    <div class="dashboard-header">
+      <div class="heading" style="padding-top: 1rem; padding-left: 0.5rem;">Admin Panel</div>
+      <div id="currentdate">
+      </div>
+
+    </div>
+    
+    
+    <hr class="dashboard-heading">
+
+
+
+
+        <div class="adminbuttons">
+            <a href="{{ url_for('admin') }}"  type="button" class="btn btn-outline-info active" style="color:black">Overview</a>
+            <a  href="{{ url_for('usermanagement') }}" type="button" class="btn btn-outline-info" style="color:black">User Management</a>
+            <a href="delayreport" type="button" class="btn btn-outline-info" style="color:black">Delay Report</a>
+            <form id="reportForm" action="/download_delay_report" method="post">
+              {{ form.hidden_tag() }}
+              <a href="#" onclick="document.getElementById('reportForm').submit();" class="btn btn-outline-info" style="color:black">Generate Excel Report</a>
+          </form>
+       
+           </div>
+
+
+<div class="admin-section-strip">
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+      <div class="row">
+        <div class="col-lg-3">
+          
+          <div class="admin-card-production" data-title="90 billets are produced today till now">
+            <div class="heading-card">
+                <p style="color: rgb(241, 157, 0);margin: 0;font-size: smaller;">Todays billet count</p>
+          </div>
+          <hr>
+          
+          <div class="overview">
+
+            <p style="color: rgb(241, 157, 0);margin: 0;font-size: smaller;"> {{ todays_count["billet_today"] }} </p>
+          </div>
+          
+          </div>
+          
+        </div>
+
+
+        <div class="col-lg-3">
+          
+          <div class="admin-card-production" data-title="Today's efficency is 50% till now">
+         <div class="heading-card">
+            <p style="color: rgb(241, 157, 0);margin: 0;font-size: smaller;">Yesterday billet count</p>
+          </div>
+          <hr>
+        
+          <div class="overview">
+
+            <p style="color: rgb(241, 157, 0);margin: 0;font-size: smaller;"> {{ yesterdays_count["billet_yesterday"] }} </p>
+          </div>
+      
+          </div>
+          
+        </div>
+
+        <div class="col-lg-3">
+          
+          <div class="admin-card-production"  data-title="Total Cobble till now is 90">
+         
+            <div class="heading-card">
+                <p style="color: rgb(241, 157, 0);margin: 0;font-size: smaller;">Week billet count</p>
+           </div>
+           <hr>
+           
+           <div class="overview">
+
+            <p style="color: rgb(241, 157, 0);margin: 0;font-size: smaller;">{{ week_totals["total_billet_count"] }} </p>
+          </div>
+         
+          </div>
+          </div>
+
+          <div class="col-lg-3">
+          
+            <div class="admin-card-production"  data-title="Total Cobble till now is 90">
+           
+              <div class="heading-card">
+                <p style="color: rgb(241, 157, 0);margin: 0;font-size: smaller;">Month billet count</p>
+             </div>
+             <hr>
+             
+             <div class="overview">
+
+              <p style="color: rgb(241, 157, 0);margin: 0;font-size: smaller;">{{ month_totals["total_billet_count"] }}</p>
+            </div>
+            
+           
+            </div>
+            </div>
+          
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+              
+              <div class="admin-card-production" data-title="90 billets are produced today till now">
+                <div class="heading-card">
+                    <p style="color: rgb(238, 0, 255);margin: 0;font-size: smaller;">Todays cobble count</p>
+              </div>
+              <hr>
+              
+              <div class="overview">
+
+                <p style="color: rgb(238, 0, 255);margin: 0;font-size: smaller;"> {{ todays_count["cobble_today"] }}</p>
+              </div>
+              
+              </div>
+              
+            </div>
+    
+    
+            <div class="col-lg-3">
+              
+              <div class="admin-card-production" data-title="Today's efficency is 50% till now">
+             <div class="heading-card">
+                <p style="color: rgb(238, 0, 255);margin: 0;font-size: smaller;">Yesterday cobble count</p>
+              </div>
+              <hr>
+
+              <div class="overview">
+
+                <p style="color: rgb(238, 0, 255);margin: 0;font-size: smaller;">{{ yesterdays_count["cobble_yesterday"] }}</p>
+              </div>
+            
+          
+              </div>
+              
+            </div>
+    
+            <div class="col-lg-3">
+              
+              <div class="admin-card-production"  data-title="Total Cobble till now is 90">
+             
+                <div class="heading-card">
+                    <p style="color: rgb(238, 0, 255);margin: 0;font-size: smaller;">Week cobble count</p>
+               </div>
+               <hr>
+               
+               <div class="overview">
+
+                <p style="color: rgb(238, 0, 255);margin: 0;font-size: smaller;">{{ week_totals["total_cobble_count"] }}</p>
+              </div>
+
+              </div>
+              </div>
+    
+              <div class="col-lg-3">
+              
+                <div class="admin-card-production"  data-title="Total Cobble till now is 90">
+               
+                  <div class="heading-card">
+                    <p style="color: rgb(238, 0, 255);margin: 0;font-size: smaller;">Month cobble count</p>
+                 </div>
+                 <hr>
+                 
+                 <div class="overview">
+
+                  <p style="color: rgb(238, 0, 255);margin: 0;font-size: smaller;">{{ month_totals["total_cobble_count"] }}</p>
+                </div>
+  
+               
+                </div>
+                </div>
+              
+            </div>
+
+
+ <div class="row">
+        <div class="col-lg-3">
+          
+          <div class="admin-card-production" data-title="90 billets are produced today till now">
+            <div class="heading-card">
+                <p style="color: brown;margin: 0;font-size: smaller;">Todays Energy.C. </p>
+          </div>
+          <hr>
+          
+          <div class="overview">
+
+            <p style="color: brown;margin: 0;font-size: smaller;"> {{ todays_count["energy_today"] }} </p>
+          </div>
+          
+          </div>
+          
+        </div>
+
+
+        <div class="col-lg-3">
+          
+          <div class="admin-card-production" data-title="Today's efficency is 50% till now">
+         <div class="heading-card">
+            <p style="color: brown;margin: 0;font-size: smaller;">Yesterday Energy.C. </p>
+          </div>
+          <hr>
+        
+          <div class="overview">
+
+            <p style="color: brown;margin: 0;font-size: smaller;">{{ yesterdays_count["energy_yesterday"] }}</p>
+          </div>
+          
+
+          </div>
+          
+        </div>
+
+        <div class="col-lg-3">
+          
+          <div class="admin-card-production"  data-title="Total Cobble till now is 90">
+         
+            <div class="heading-card">
+                <p  style="color: brown;margin: 0;font-size: smaller;">Week Energy.C. </p>
+           </div>
+           <hr>
+
+           <div class="overview">
+
+            <p style="color: brown;margin: 0;font-size: smaller;">{{ week_totals["total_energy_consumption"] }} </p>
+          </div>
+          
+           
+         
+          </div>
+          </div>
+
+          <div class="col-lg-3">
+          
+            <div class="admin-card-production"  data-title="Total Cobble till now is 90">
+           
+              <div class="heading-card">
+                <p style="color: brown;margin: 0;font-size: smaller;">Month Energy.C. </p>
+             </div>
+             <hr>
+             
+             <div class="overview">
+
+              <p style="color: brown;margin: 0;font-size: smaller;">  {{ month_totals["total_energy_consumption"] }}</p>
+            </div>
+            
+           
+            </div>
+            </div>
+          
+        </div>
+
+       
+
+
+
+
+
+        
+
+   
+
+    </div>
+
+  <!--------------------------------dashboard.html / home.html---end---------------------------------------------------container----------------------------------------------------------->
+
+ 
+  {% endblock %}

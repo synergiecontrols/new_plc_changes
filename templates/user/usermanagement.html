@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Today Production{% endblock %}
+
+{% block content %}
+<div class="main">
+    <div class="unsubmit-main" style="min-height: 70vh;">
+        <h4 style="margin-left:3%; margin-top:10px; color: brown;">User Management</h4>
+        <hr>
+        <div class="adminbuttons">
+            <a href="{{ url_for('admin') }}" type="button" class="btn btn-outline-info" style="color:black">Overview</a>
+            <a href="{{ url_for('usermanagement') }}" type="button" class="btn btn-outline-info active" style="color:black">User Management</a>
+            <a href="delayreport"  type="button" class="btn btn-outline-info" style="color:black">Delay Report</a>
+            <form id="reportForm" action="/download_delay_report" method="post">
+                {{ form.hidden_tag() }}
+                <a href="#" onclick="document.getElementById('reportForm').submit();" class="btn btn-outline-info" style="color:black">Generate Excel Report</a>
+            </form>
+         
+        </div>
+
+        <hr >
+        <div class="add_new_user">
+
+            <a href="{{ url_for('register') }}" class="btn btn-primary">+ Add new user</a>    </div>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>User id</th>
+                    <th>User Name</th>
+                    <th>User Mail</th>
+                    <th>Department</th>
+                    <th>Role</th>
+                    <th>Update Role</th>
+                    <th>Delete User</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in userlist %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.department }}</td>
+                    <td>{{ user.role }}</td>
+                    <td style="text-align: center; margin: 4px;">
+                        <form action="{{ url_for('update_user_role', user_id=user.id) }}" method="post">
+                            <!-- <input name="csrf" value="{{csrf_token() }}" type="hidden"/> -->
+                             {{ form.hidden_tag() }}
+                            <select class="select-class " id="role" name="role">
+                                <option value="">Select Role</option>
+                                <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Admin</option>
+                                <option value="user" {% if user.role == 'user' %}selected{% endif %}>User</option>
+                                <option value="operator" {% if user.role == 'operator' %}selected{% endif %}>operator</option>
+                                <option value="engineerarea1" {% if user.role == 'engineerarea1' %}selected{% endif %}>Engineer Area 1</option>
+                                <option value="engineerarea2" {% if user.role == 'engineerarea2' %}selected{% endif %}>Engineer Area 2</option>
+                                <option value="engineerarea3" {% if user.role == 'engineerarea3' %}selected{% endif %}>Engineer Area 3</option>
+                                <option value="electrichead" {% if user.role == 'electrichead' %}selected{% endif %}>Electrical Head</option>
+                                <option value="operationhead" {% if user.role == 'operationhead' %}selected{% endif %}>Operational Head</option>
+                                <option value="mechanicalhead" {% if user.role == 'mechanicalhead' %}selected{% endif %}>Mechanical  Head</option>
+                                <option value="planthead" {% if user.role == 'planthead' %}selected{% endif %}>Plant Head</option>
+                            </select>
+                            <button type="submit" class="btn btn-success" style="margin-top: 5px;">Update Role</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="{{ url_for('delete_user', user_id=user.id) }}" method="post">
+                            {{ form.hidden_tag() }}
+                            <button type="submit" class="btn btn-danger">Delete User</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

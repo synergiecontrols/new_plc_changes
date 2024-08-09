@@ -1,0 +1,62 @@
+
+
+    <!--------------------------------------pop-up--------------------------------->
+  
+    <!-- Popup HTML -->
+     
+  <div id="myPopup" class="popup">
+    <div class="popup-content">
+        <div class="popup-heading">
+            <h3>ALERT !!!</h3>
+            <button class="closepopupbutton" id="closePopup">&#10006;</button>
+        </div>
+        <form action="{{ url_for('submit_event') }}" method="post">
+
+            {{ form.hidden_tag() }}
+        <div class="eventinfo">
+            <!-- Update these spans with the received data -->
+            <p>Event Name: <span id="eventName">N/A</span></p>
+            <p>Event Time Start: <span id="eventTimeStart">N/A</span></p>
+            <p>Event Time Stop: <span id="eventTimeStop">N/A</span></p>
+            <p>Delay time due to Event: <span id="delayTime">N/A</span></p>
+            <hr>
+            <p><span>*For Operator</span></p>
+            <div class="operatorfield">
+                <p>Department:</p>
+                <select id="responsibleDepartment" name="department">
+                    <option value="">Select Department</option>
+                    <option value="mechanical">Mechanical</option>
+                    <option value="electrical">Electrical</option>
+                    <option value="operational">Operational</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="operatorfield">
+                <p>Event Area</p>
+                <select id="eventarea" name="eventarea">
+                    <option value="roughing">Roughing Mill</option>
+                    <option value="intermediate">Intermediate Mill</option>
+                    <option value="finishing">Finishing Mill</option>
+                </select>
+            </div>
+            <div class="operatorfield">
+                <p>Reason:</p>
+                <select id="reason" name="reason">
+                    <option value="">Select Reason</option>
+                </select>
+            </div>
+            <div class="reasoninput" id="reasonInputContainer">
+                <input type="text"  name="reasonInput" id="reasonInput" placeholder="Enter Reason">
+            </div>
+        </div>
+        <hr>
+        <div class="submitbutton">
+            <button style="width:150px;" type="submit" class="btn btn-info">Submit</button>
+        </div>
+    </div>
+</div>
+</form>
+
+
+   
+    <!---------------------------------------------------------pop-up-end---------------------------------------------------------------->

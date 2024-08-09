@@ -1,0 +1,12 @@
+.notification-main{
+    min-height: 70vh;
+}
+
+
+.notification-card{
+    height: 4rem;
+    margin: 2px 15px;
+    text-align: left;
+    padding: 20px;
+    font-size: larger;
+}

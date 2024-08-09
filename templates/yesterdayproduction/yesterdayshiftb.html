@@ -1,0 +1,587 @@
+
+{% extends "base.html" %}
+
+{% block title %}Today production{% endblock %}
+  <!-----------------------------------dashboard.html / home.html--- --------------------------------------container------------------------ ------------------------------- -->
+  
+
+  {% block content %}
+
+
+  <div class="main">
+    <div class="dashboard-header">
+      <div class="heading" style="padding-top: 1rem; padding-left: 0.5rem;">Dashboard</div>
+      <h3 style="background-color: rgb(1, 236, 232);padding: 5px;">Yesterday shift B <span class="fas fa-chart-pie"></span></h3>
+      <div id="currentdate">
+      </div>
+
+    </div>
+    
+    
+    <hr class="dashboard-heading">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4">
+          
+          <div class="card-production" data-title= "Total billet produced {{ running_billet_count }}">
+            <div class="heading-card">
+              Total Production <small> ( billet )</small>
+          </div>
+          <hr>
+            <div class="rating">
+              <h2>
+                  <span class="counter" data-target="">{{ running_billet_count }}
+                  </span>
+                  <br>
+              </h2>
+              <div class="block">
+      
+              </div>
+            </div>
+            <div class="total-time" id="timePassed"></div>
+          </div>
+          
+        </div>
+
+        <div class="col-lg-4">
+          
+          <div class="card-production" data-title="Yesterday ShiftB's efficiency is {{ efficiency }} till now">
+         <div class="heading-card">
+             Efficiency
+          </div>
+          <hr>
+          <div class="rating">
+          <div role="progressbar" aria-valuenow="{{ efficiency }}"  aria-valuemin="0" aria-valuemax="100" class="circle" style="--value: {{ efficiency }}">
+
+          </div>
+          <div class="efficency_number">
+            {{ efficiency }}<small style="font-size: 1.5rem;">%</small>
+          </div>
+          </div>
+      
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          
+          <div class="card-production"  data-title="Total Cobble in shift B was {{ running_cobble }}">
+         
+            <div class="heading-card">
+              Cobble
+           </div>
+           <hr>
+           <div class="cobble-count">
+            <div class="circle1">
+            <div class="circle2">
+
+            </div>
+          </div>
+            <div class="cobble">
+                {{ running_cobble }}                  
+            </div>
+        </div>
+          <div class="total-time" ></div>
+          </div>
+          </div>
+          
+        </div>
+
+
+     <div class="row">
+      <div class="col-lg-6">
+        <div class="card-production" style="height: 20rem;" data-title="Production per hour">
+          <div class="heading-card">
+            Production / hour
+            <span class="fas fa-chart-line" style="font-size:24px; color:rgb(67, 243, 3); margin-left: 10px; cursor: pointer;" title="Click me - chart view" id="chart-icon-production"></span>
+            <span class="fas fa-list-alt" style="font-size:24px; color:rgb(67, 243, 3); margin-left: 10px; cursor: pointer;" title="Click me - Table view" id="table-icon-production"></span>
+          </div>
+          <hr>
+     
+            <canvas id="myChart0" class="production-charts" style="width:100%; max-width:700px; height:80%;"></canvas>
+            <div class="table-wrapper">
+            <table id="production-table" class="production-table" style="display: none;">
+              <tr>
+                <th>Hour</th>
+                {% for hour_range in billet_hour_ranges[12: ]%}
+                <th>{{ hour_range }}</th>
+            {% endfor %}
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <th>Billets</th>
+                  {% for count in billet_count[12: ] %}
+                          <td>{{ count }}</td>
+                      {% endfor %}
+        
+                </tr>
+            </table>
+          </div>
+       
+        </div>
+      </div>
+  
+
+      <div class="col-lg-6" >
+        <div class="card-production"style="height: 20rem;" data-title="Energy consumption per hour">
+       
+            <div class="heading-card">
+              Energy consumption / hour  <span class="fas fa-chart-pie" id="chart-icon-energy" title="Click me - chart view" style="font-size:24px ; cursor: pointer;color:rgb(67, 243, 3); margin-left: 10px;"></span>
+              <span class="fas fa-list-alt" style="font-size:24px; color:rgb(67, 243, 3); margin-left: 10px; cursor: pointer;" title="Click me - Table view" id="table-icon-energy"></span>
+            </div>
+  <hr>
+
+  <canvas id="radarChart" style="width:100%;max-width:700px;height:80%"></canvas>
+  
+
+  <div class="table-wrapper">
+    <table id="table-energy" class="production-table" style="display: none;">
+      <tr>
+        <th>Hour</th>
+        {% for hour_range in energy_hour_ranges[12: ]%}
+        <th>{{ hour_range }}</th>
+    {% endfor %}
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <th>Energy</th>
+          {% for count in energy_count[12: ] %}
+                  <td>{{ count }}</td>
+              {% endfor %}
+
+        </tr>
+    </table>
+  </div>
+      
+
+
+      </div>
+      </div>
+     </div>
+
+  
+  
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+     <div class="row">
+      <div class="col-lg-6" >
+        <div class="card-production" style="height: 20rem;" data-title="cobble per hour">
+          
+          <div class="heading-card" >
+            Cobble per hour  <span class="fas fa-chart-bar" id="chart-icon-cobble" title="Click me - chart view" style="font-size:24px ; cursor: pointer;color:rgb(67, 243, 3); margin-left: 10px;"></span>
+            <span class="fas fa-list-alt" style="font-size:24px; color:rgb(67, 243, 3); margin-left: 10px; cursor: pointer;" title="Click me - Table view" id="table-icon-cobble"></span>
+         </div>
+         <hr>
+         <canvas id="myChart" style="width:100%;max-width:700px;height:80%"></canvas>
+         <div class="table-wrapper">
+          <table id="table-cobble" class="production-table" style="display: none;">
+            <tr>
+              <th>Hour</th>
+              {% for hour_range in cobble_hour_ranges[12: ]%}
+              <th>{{ hour_range }}</th>
+          {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Cobble</th>
+                {% for count in cobble_count[12: ] %}
+                        <td>{{ count }}</td>
+                    {% endfor %}
+      
+              </tr>
+          </table>
+        </div>
+      
+        
+        </div>
+        
+      </div>
+
+      <div class="col-lg-6" >
+        <div class="card-production"  style="height: 20rem;" data-title="Total Idle Time is  {{ idle_time | tojson }} hrs">
+          <div class="heading-card">
+            Time Analysis<span class="fas fa-chart-pie" id="chart-icon-time" title="Click me - chart view" style="font-size:24px ;color:rgb(67, 243, 3); cursor: pointer; margin-left: 10px;"></span>
+            <span class="fas fa-list-alt" style="font-size:24px; color:rgb(67, 243, 3); margin-left: 10px; cursor: pointer;" title="Click me - Table view" id="table-icon-time"></span>
+         </div> 
+         <hr>
+         <div class="downtime" style="width: 100%; height: 16rem;">
+
+
+          <canvas id="myDoughnutChart" style="width:80%;"></canvas>
+          <div class="table-wrapper">
+            <table id="table-time" class="production-table" style="display: none;">
+              <tr>
+                <th>Idle time</th>
+                <th>Running time</th>
+              </tr>
+              <tr>
+               <td> {{ idle_time | tojson }} hrs</td>
+               <td>{{ 24 - idle_time }} hrs</td>
+              </tr>
+            </table>
+          </div>
+         </div>
+        
+        </div>
+        
+      </div>
+        
+      </div>
+
+
+      <div class="row">
+
+        <div class="col-lg-8" >
+          <div class="card-production"  style="height: 20rem;" data-title="yesterday's overall statistic">
+            <div class="heading-card">
+              yesterday's Overall Statistic <span class="fas fa-analytics" style="font-size:24px ;color:rgb(67, 243, 3); margin-left: 10px;"></span> 
+           <hr>
+           <div class="stats" style="display: flex;flex-direction: row;justify-content: space-between; margin-left: 1rem;margin-right: 1rem;">
+            <h3>Activity....</h3>
+            <h3>Count....</h3>
+           </div>
+           <hr>
+           <div class="stats" style="display: flex;flex-direction: row;justify-content: space-between;margin-left: 1rem;margin-right: 1rem;">
+            <h5>yesterday's total production </h5>
+            <h5>   {{ running_billet_count }}    </h5>
+           </div>
+          <hr>
+           <div class="stats" style="display: flex;flex-direction: row;justify-content: space-between;margin-left: 1rem;margin-right: 1rem;">
+            <h5>yesterday's Efficiency </h5>
+            <h5>110</h5>
+           </div><hr>
+           <div class="stats" style="display: flex;flex-direction: row;justify-content: space-between;margin-left: 1rem;margin-right: 1rem;">
+            <h5>yesterday's cobble </h5>
+            <h5>   {{ running_cobble }}    </h5>
+           </div><hr>
+           <div class="stats" style="display: flex;flex-direction: row;justify-content: space-between;margin-left: 1rem;margin-right: 1rem;">
+            <h5>yesterday's energy consumption</h5>
+            <h5>   {{ running_energy_consume }}    </h5>
+           </div><hr>
+           <div class="stats" style="display: flex;flex-direction: row;justify-content: space-between;margin-left: 1rem;margin-right: 1rem;">
+            <h5>yesterday's running time</h5>
+            <h5>{{ 24 - idle_time }} hrs</h5>
+           </div><hr>
+           <div class="stats" style="display: flex;flex-direction: row;justify-content: space-between;margin-left: 1rem;margin-right: 1rem;">
+            <h5>yesterday's idle time</h5>
+            <h5>{{ idle_time | tojson }} hrs</h5>
+           </div>
+
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="col-lg-4" >
+
+        <div class="card-production"  style="height: 20rem;" data-title="Total energy consumption  {{ running_energy_consume }} ">
+          <div class="heading-card">
+            Energy Consumption
+         </div> 
+
+         <hr>
+
+         <div class="cobble-count">
+          
+          <div class="cobble">
+              {{ running_energy_consume }}                  
+          </div>
+      </div>
+
+         </div>
+        
+
+        </div>
+      </div>
+
+
+    </div>
+    <form action="/download/yesterday" method="post">
+      {{ form.hidden_tag() }}
+      <button type="submit"  class="btn btn-info">Generate Excel File</button>
+  </form>
+
+
+    </div>
+    </div>
+
+
+
+
+<!-------------------------------dashboard.html / home.html---end---------------------------------------------------container----------------------------------------------------------->
+
+
+
+<script>
+
+  //line chart javascript code
+
+// Event listener for the chart and table icons related to production
+const chartIconProduction = document.getElementById('chart-icon-production');
+const tableIconProduction = document.getElementById('table-icon-production');
+const chartProduction = document.getElementById('myChart0')
+const tableProduction = document.getElementById("production-table")
+
+chartIconProduction.addEventListener('click', function() {
+  chartProduction.style.display = 'block';
+  tableProduction.style.display = 'none';
+});
+
+tableIconProduction.addEventListener('click', function() {
+  chartProduction.style.display = 'none';
+  tableProduction.style.display = 'table';
+});
+
+// Event listener for the chart and table icons related to energy
+const chartIconEnergy = document.getElementById('chart-icon-energy');
+const tableIconEnergy = document.getElementById('table-icon-energy');
+const chartEnergy = document.getElementById('radarChart')
+const tableEnergy = document.getElementById("table-energy")
+
+chartIconEnergy.addEventListener('click', function() {
+  chartEnergy.style.display = 'block';
+  tableEnergy.style.display = 'none';
+});
+
+tableIconEnergy.addEventListener('click', function() {
+  chartEnergy.style.display = 'none';
+  tableEnergy.style.display = 'table';
+});
+
+const chartIconCobble = document.getElementById('chart-icon-cobble');
+const tableIconCobble = document.getElementById('table-icon-cobble');
+const chartCobble = document.getElementById('myChart')
+const tableCobble = document.getElementById("table-cobble")
+
+chartIconCobble.addEventListener('click', function() {
+chartCobble.style.display = 'block';
+  tableCobble.style.display = 'none';
+});
+
+tableIconCobble.addEventListener('click', function() {
+chartCobble.style.display = 'none';
+  tableCobble.style.display = 'table';
+});
+
+
+
+const chartIconTime = document.getElementById('chart-icon-time');
+const tableIconTime = document.getElementById('table-icon-time');
+const chartTime = document.getElementById('myDoughnutChart')
+const tableTime = document.getElementById("table-time")
+
+chartIconTime.addEventListener('click', function() {
+chartTime.style.display = 'block';
+  tableTime.style.display = 'none';
+});
+
+tableIconTime.addEventListener('click', function() {
+chartTime.style.display = 'none';
+  tableTime.style.display = 'table';
+});
+
+
+
+
+  
+  
+        // Extract the data passed from Flask using Jinja
+        const xValues = {{ billet_hour_ranges[12: ] | tojson }};
+        const yValues = {{ billet_count[12: ] | tojson }};
+
+          
+          new Chart("myChart0", {
+            type: "line",
+            data: {
+              labels: xValues,
+              datasets: [{
+                fill: false,
+                lineTension: 0,
+                backgroundColor: "rgb(0, 255, 0)",
+                borderColor: "rgba(0,1,255,0.1)",
+                data: yValues,
+              }]
+            },
+            options: {
+              legend: { display: false },
+              scales: {
+                yAxes: [{ ticks: { min: 0, max: 100 } }]
+              },
+              tooltips: {
+                callbacks: {
+                  label:function(tooltipItem, data) {
+      let label = '';
+      const xValue = tooltipItem.xLabel;
+      const yValue = tooltipItem.yLabel;
+      label += 'Hours: ' + xValue + ', Billets: ' + yValue;
+      return label;
+                                  }
+                }
+              }
+            }
+          });
+  
+  
+  
+  
+  
+    // Radar chart data for eneergy consumption per hour
+    var data = {
+      labels:   {{ energy_hour_ranges[12: ] | tojson }},
+      datasets: [{
+        label: 'Dataset 1',
+        data:  {{ energy_count[12: ] | tojson }},
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1
+      }]
+    };
+  
+    // Radar chart options
+    var options = {
+        legend: { display: false },
+        scale: {
+          ticks: {
+            beginAtZero: true
+          }
+        },
+
+        tooltips: {
+      callbacks: {
+        label: function(tooltipItem, data) {
+          const xValueb = tooltipItem.xLabel;
+          const yValueb = tooltipItem.yLabel;
+          return `Hours: ${xValueb}, energy: ${yValueb}`;
+        }
+      }
+    }
+      };
+    
+  
+    // Get the context of the canvas element we want to select
+    var ctx = document.getElementById('radarChart').getContext('2d');
+  
+    // Create the radar chart
+    var radarChart = new Chart(ctx, {
+      type: 'radar',
+      data: data,
+      options: options
+    });
+  
+  
+  
+  
+  
+    // bar chart for cobble per hour
+
+    const xValuesb = {{ cobble_hour_ranges[12:] | tojson }};
+    const yValuesb = {{ cobble_count[12:] | tojson }};
+
+const barColors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#ffbb78', '#9467bd', '#ff9896', '#98df8a', '#17becf', '#d62728', '#8c564b', '#1f77b4', 
+  '#bcbd22', '#7f7f7f', '#c5b0d5', '#aec7e8', '#1f77b4', '#ff9896', '#2ca02c', '#ffbb78', '#17becf', '#8c564b', '#7f7f7f', '#f7f7f7', '#ff7f0e'];
+
+new Chart("myChart", {
+  type: "bar",
+  data: {
+    labels: xValuesb,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValuesb,
+      fill: false,
+      lineTension: 0
+    }]
+  },
+  options: {
+    legend: { display: false },
+    scales: {
+                yAxes: [{ ticks: { min: 0, max: 10 } }]
+              },
+    tooltips: {
+      callbacks: {
+        label: function(tooltipItem, data) {
+          const xValueb = tooltipItem.xLabel;
+          const yValueb = tooltipItem.yLabel;
+          return `Hours: ${xValueb}, cobbles: ${yValueb}`;
+        }
+      }
+    }
+  }
+});
+ 
+
+  
+
+
+
+
+
+
+// doughnut chart for DownTime
+var idle_time = {{ idle_time | tojson }};
+
+var data = {
+      labels: ['Idle Time','running time'],
+      datasets: [{
+        data: [idle_time ,24-idle_time ],
+        backgroundColor: ['#ff6384', '#36a2eb',],
+        hoverBackgroundColor: ['#ff6384', '#36a2eb']
+      }]
+    };
+
+
+    // Configuration options
+    var options = {
+      responsive: true,
+      maintainAspectRatio: false,
+      tooltips: {
+        callbacks: {
+          label: function(tooltipItem, data) {
+            var label = data.labels[tooltipItem.index];
+            var value = data.datasets[0].data[tooltipItem.index];
+            return label + ': ' + value + 'hrs';
+          }
+        }
+      }
+    };
+
+    // Get the context of the canvas element
+    var ctx = document.getElementById('myDoughnutChart').getContext('2d');
+
+    // Create the doughnut chart
+    var myDoughnutChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: data,
+      options: options
+    });
+  
+  </script>
+
+  <!-- autoreload page after 30 sec -->
+  <!-- <script>
+          // Function to reload the page after 30 seconds
+      function autoReload() {
+          setTimeout(function() {
+              location.reload();
+          }, 30000); // 30 seconds in milliseconds
+      }
+
+      // Call the autoReload function when the page loads
+      window.onload = autoReload;
+
+  </script> -->
+{% endblock %}

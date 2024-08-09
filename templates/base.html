@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% block head %}
+  <title>{% block title %}PLC_dashboard{% endblock %}PLC_dashboard</title>
+  {% endblock %}
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+  <link rel="stylesheet" href="/static/css/base.css">
+  <link rel="stylesheet" href="/static/css/todayproduction.css">
+  <link rel="stylesheet" href="/static/css/setting.css">
+  <link rel="stylesheet" href="/static/css/delayreport.css">
+  <link rel="stylesheet" href="/static/css/test-html.css">
+  <link rel="stylesheet" href="/static/css/profilepage.css">
+  <link rel="stylesheet" href="/static/css/submit_event_form.css">
+  <link rel="stylesheet" href="/static/css/registration_login.css">
+  <link rel="stylesheet" href="/static/css/admin.css">
+  <link rel="stylesheet" href="/static/css/notification.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-custom sticky-top">
+    <div class="container-fluid">
+      <div class="nav-logo"><img src="/static/images/synergilogo.png" alt="Synergie Logo"></div>
+      <div>
+      <div class="container-fluid nav-link-last">
+        {% if current_user.is_authenticated%}
+        
+        {% endif %}
+
+      {% if current_user.is_authenticated%}
+      <span style="color: #fff3cd; margin-right: 15px; font-size: 20px;">{{current_user.name}} - {{current_user.role}}</span> 
+      
+      <div class="notification" aria-disabled="true">
+        <a href="/notification" ><span class="fas fa-bell notification-icon">
+
+        </span></a><span class="notification-dot"></span>
+      </div>
+
+      <div class="auth-button">
+       
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+  
+      {% else %}
+
+      <div class="auth-button">
+      <a href="{{ url_for('login') }}">Login</a>
+    </div>
+    
+    {% endif %}
+   
+    
+      <div class="location"><i class="fa fa-map-marker" aria-hidden="true"></i> Mumbai</div>
+    </div>
+    </div>
+    </div>
+  </nav>
+
+ 
+
+  <div class="btn-bar">
+    <span class="fas fa-bars"></span>
+  </div>
+  <nav class="d-sidebar">
+    <div class="text-sidebar">Menu</div>
+    <ul class="ul">
+      <li>
+        <a class="feat-btn">Today
+          <span class="fas fa-caret-down first"></span>
+        </a>
+        <ul class="feat-show">
+          <li class="d-option"><a href="/">Today Runtime</a></li>
+          <li class="d-option"><a href="shifta">Shift A</a></li>
+          <li class="d-option"><a href="shiftb">Shift B</a></li>
+        </ul>
+      </li>
+      <li>
+        <a class="feat-btn">Yesterday
+          <span class="fas fa-caret-down first"></span>
+        </a>
+        <ul class="feat-show">
+          <li class="d-option"><a href="yesterday">Yesterday Summary</a></li>
+          <li class="d-option"><a href="yesterdayshifta">Shift A</a></li>
+          <li class="d-option"><a href="yesterdayshiftb">Shift B</a></li>
+        </ul>
+      </li>
+      <li class="d-option"><a href="weeklyproduction">Week</a></li>
+      <li class="d-option"><a href="monthlyproduction">Month</a></li>
+    
+
+        
+        <!-- Conditional Menu Items Based on User Roles -->
+        {% if 'admin' in current_user.role %}
+        <li class="d-option"><a href="delayreport">Delay Report</a></li>
+            <li class="d-option"><a href="unsubmitted_events">Unsubmitted Events</a></li>
+            <li class="d-option"><a href="unapproved_events">Unapproved Events</a></li>
+            <li class="d-option"><a href="rejected_events">Rejected Events</a></li>
+            <li class="d-option"><a href="approved_events">Approved Events</a></li>
+            <li class="d-option"><a href="admin">Admin Panel</a></li>
+        {% elif 'operator' in current_user.role %}
+            <li class="d-option"><a href="unsubmitted_events">Unsubmitted Events</a></li>
+            <li class="d-option"><a href="unapproved_events">Unapproved Events</a></li>
+            <li class="d-option"><a href="rejected_events">Rejected Events</a></li>
+            <li class="d-option"><a href="approved_events">Approved Events</a></li>
+        {% elif 'engineerarea1' in current_user.role or 'engineerarea2' in current_user.role or 'engineerarea3' in current_user.role %}         
+            <li class="d-option"><a href="unapproved_events">Unapproved Events</a></li>
+        {% elif 'electrichead' in current_user.role or 'mechanicalhead' in current_user.role or 'operationalhead' in current_user.role %}
+            <li class="d-option"><a href="unapproved_events">Unapproved Events</a></li>
+            <li class="d-option"><a href="rejected_events">Rejected Events</a></li>
+            <li class="d-option"><a href="approved_events">Approved Events</a></li>
+        {% elif 'planthead' in current_user.role %}
+
+        <li class="d-option"><a href="delayreport">Delay Report</a></li>
+
+        <li class="d-option"><a href="unsubmitted_events">Unsubmitted Events</a></li>
+        <li class="d-option"><a href="unapproved_events">Unapproved Events</a></li>
+        <li class="d-option"><a href="rejected_events">Rejected Events</a></li>
+        <li class="d-option"><a href="approved_events">Approved Events</a></li>
+
+        {% endif %}
+        
+      
+        
+      
+      <li>
+        <hr class="sidebar-divider">
+        <div class="d-sidebar-footer">
+          <div class="setting" aria-disabled="true">
+            <a href="setting" ><span class="fas fa-cog fa-spin " style="font-size:24px"></span></a>
+          </div>
+          <div class="profile">
+            <a href="userprofile"><span class="fas fa-user"></span></a>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+
+  {% with msg = get_flashed_messages() %}
+  {% if msg %}
+    {% for message in msg %}
+      <div style="padding-left: 10%; " class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>{{ message }}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+
+  {% block content %}
+  {% endblock %}
+
+  <div class="footer">
+    <p>&copy; 2024 Synergie Controls and System Pvt Ltd, Navi Mumbai. All rights reserved.</p>
+  </div>
+
+  <div class="levitate-body">
+    <div class="levitate">
+      <div class="logo">
+        <span class="h">Feedback</span>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+<script>  
+
+   //javascript for pop up ------------------------------------
+  // Select elements
+  const responsibleDepartment = document.getElementById("responsibleDepartment");
+  const reason = document.getElementById("reason");
+  const reasonInputContainer = document.getElementById("reasonInputContainer");
+  const reasonInput = document.getElementById("reasonInput");
+  const myPopup = document.getElementById("myPopup");
+  const closePopup = document.getElementById("closePopup");
+
+
+// pop up update reasons --------------------------------------------------------
+
+  // Reasons data based on department
+  const reasons = {
+    mechanical: ["COOLING BED", "ALIGNING PROBLEM", "BAR PRESSING PROBLEM", "BAR SLIDING", "BAR STUCK", "BAR STUCK IN ROLLER TABLE",
+"BILLET STUCK ON ROLLER", "BLADE CHANGE", "BLV FOUNDATION BREAK", "BLV PROBLEM", "BOLT BREAK", "BUNDLE TYING MACHINE PROBLEM",
+"CABLE BURN", "CHAIN BREAK", "CHAIN SOCKET PROBLEM", "CHANGE", "CLEARANCE", "COLD SHEAR BLADE PROBLEM",
+"CUTTING VARIATION", "CYLINDER WORK", "dummy apron change", "FITTER MISTAKE", "GEARBOX PROBLEM", "HOST WATER PIPE LEAKAGE",
+"LEAKAGE", "MAGNET CHANGE", "MAGNET PROBLEM", "MATERIAL FLY", "MATERIAL HIT", "MATERIAL HIT IN FLAPPER PLATE",
+"MATERIAL SLIP", "MOTOR CASING COVER NOT AVAILABLE SO CABLE BURN", "MOTOR CHANGED", "MOTOR CHEACKING", "MOTOR PROBLEM", "NOT OK",
+"OIL LEVEL NOT OK", "PIN OUT", "PLATE CHANGE", "PLATE PROBLEM", "PROXY PROBLEM", "ROLL CHANGE",
+"ROLL JAM", "ROLLER TABLE LIFT", "ROLLER TABLE OUT", "SETTING", "SHAFT BREAK", "SMALL PIECE PRESENT IN DISSAPPERING STOPPER",
+"STRIKER PROBLEM", "TAIL PIECE STUCK IN ROLL", "TRIP", "TROLLY CYLINDER PROBLEM", "TROLLY FALL DOWN", "TROLLY UP",
+"UNDERSHOOT AT COOLING", "VALVE PROBLEM", "WELDING DONE", "MILL AREA", "#18 BEDPLATE CYLINDER CLAVIS PROBLEM", "AIR OIL",
+"BEARING DAMAGE", "BEARING FAIL", "BEARING FAIL DUE TO AIR OIL NOT CAME", "BILLET GAP IS LESS", "BLADE BOLT BREAK", "BLADE CHANGE",
+"BLOWER PROBLEM", "BOLT BREAK", "BYPASS SHIFTER NOT CLOSED", "CARDAN SHAFT BOLT CHANGE", "CARDON SHAFT BOLT BREAK", "CARDON SHAFT CHANGE",
+"CARRIER CHANGE", "CARRIER CHOCK BOLT BREAK", "CARRIER CHOKE HUB BOLT BREAK", "CARRIER PROBLEM", "CARRIER SETTING", "CARRY FORWARD",
+"CHANGE", "CHILLI CHECKED IN", "COUPLING PROBLEM", "CYLINDER CHANGE", "CYLINDER FAULT/CHANGED", "CYLINDER NOT PRESENT",
+"DELAY", "DID NOT TAKE HEAD CUT", "FLAPPER PLATE NOT OK", "FLOW SWITCH FAULT", "GEARBOX PROBLEM", "HMD SENSE DUE TO SCALE PRESENT",
+"HOSE PIPE LEAKAGE", "HOST WATER PIPE PROBLEM", "HOTOUT BILLLET NOT LIFT ON TIME", "HYD PRESSURE PROBLEM", "HYDRO MOTOR DIRECT", "KUNDI",
+"LINE OUT", "LOCKING CYLINDER PROBLEM", "LOOPER CLEVIS BREAK", "LOOPER PNEUMATIC SYSTEM VALVE CHANGE", "LOOPER ROLLER CHANGED", "LOOPING",
+"MATERIAL HIT", "MATERIAL HIT TO FLAPPER PLATE", "MILL WATER OFF", "MOTOR PROBLEM", "NOT IN HOME POSITION", "NOT OK",
+"NOT READY", "NOZZLE OUT", "NUMATIC SOLENOID VALVE PROBLEM", "NUT BOLT LOOSE", "PASS CHANGE", "PEDESTAL BREAK",
+"PIN OUT", "PIPE BREAK", "PIPE LINE CHANGED", "PLAY IN ROLL", "PUMP PROBLEM", "RILL BREAK",
+"RILL JAM", "ROLL BREAK", "ROLL CHANGE", "ROLL GAP ADJUSTMENT", "SETTING", "SLITTER BEARING FAIL",
+"SLITTER REEL BREAK", "SNAPSHEAR PROBLEM", "SOLENOID VALVE CHANGE", "STRIKER PROBLEM", "TROLLY PROBLEM", "UNCLAMP",
+"UNSENSE", "WATER FALL ON HMD", "WATER HOSE PIPE COUPLING CHANGE", "WATER OVERFLOW", "WATER PIPE OUT", "WATER PUMP OFF",
+"WATER SETTING", "WATER VALVE CHANGE", "WELDING DONE", "PQS & DIVIDE SHEAR", "ARM BOLT BREAK", "ARM BOLT TIGHT",
+"ARM CHANGE", "ARM FELL DOWN", "BLADE CHANGE", "BLADE GAP PROBLEM", "BOLT BREAK", "DELAY",
+"DIVIDE SHEAR ARM CHANGE", "LOOP BETWEEN #18 AND PINCH ROLL", "MATERIAL HIT", "MATERIAL SLIP", "MATERIAL STOP NEAR PINCH ROLL", "MODE NOT READY",
+"MOTOR PROBLEM", "NOT OK", "NOZZLE PIPE CHANGED", "OVER CURRENT", "PINCH ROLL LOAD NOT OK", "PIPE LINE CHANGED",
+"PQS PIPE BREAK", "PQS PIPE BREAK SO WATER FALL ON HMD", "PQS PIPE OUT", "PROBLEM", "PROXY PROBLEM", "SETTING",
+"STRICKER BREAK", "TRIP", "UP ARM STRIKER PROBLEM", "WATER LEAKAGE", "WATER SETTING", "WELDING DONE",
+"PUMP HOUSE", "MILL WATER FLOW LESS", "PUMP HOUSE ICW PUMP TRIP SO INDUCTION TRANSFORMER TRIP", "PUMP HOUSE WORK", "RHF & INDUCTION", "CRANE PROBLEM",
+"2 BILLET CAMEOUT FROM RHF", "2 NO CONVEYOR MOTOR PROBLEM", "3 NO CONVEYOR MOTOR PROBLEM", "4 NO CONVEYOR MOTOR PROBLEM", "ALIGNMENT NOT OK", "AVERAGE CHOPPING",
+"AVG CHOPPING DUE TO TEMP LOW", "BEND BILLET", "BEND BILLET AT PUSHER SIDE", "BILET STUCK", "BILLET CUTTING NEAR INDUCTION", "BILLET NOT SEND",
+"BILLET STUCK", "BILLET STUCK IN EXIT GATE", "BILLET STUCK INDUCTION COIL", "BILLET STUCK ON 11 MOTOR", "BILLETS BAR SLIDE", "BOLT BREAK",
+"BUSBAR LOOSE", "BUSBAR NUT BOLT TIGHT", "BUSBAR WATER LEAKAGE", "BY PASS BILLETS STUCK", "CABLE BREAK DUE TO CRANE", "CAPACITOR BANK WATER LEAKAGE",
+"CHAIN BREAK", "CHARGING GRADE OIL PROBLEM", "COIL CHANGE", "COIL WATER LEAKAGE", "CONVEYOR PROBLEM", "CONVRYOR MOTOR BELT OUT",
+"CRANE NOT AVAILABLE", "CRS MATERIAL CAME", "CRS MATERIAL OVER", "D MATERIAL CAME", "D MATERIAL NOT CAME", "D MATERIAL OVER",
+"DM WATER LEVEL LOW", "DM WATER PRESSURE SWITCH FAULT", "DOCK DELAY", "DOG DELAY", "DUE TO BILLET HOTOUT PROBLEM", "DUE TO LOW TEMPERATURE TAIL BREAK",
+"DUE TO RHF TEMP LOW", "DUE TO THE WATER LEAKAGE OF COIL-1 THE WATER FELL ON THE LUB-1 AND THE LUB FAULT OCCURRED", "DUST FALL ON BILLETS", "GEAR BOX PROBLEM SO RHF BILLET HOLD", "GEARBOX CHANGE", "LONG BILLETS AT PUSHER SIDE",
+"MOTOR CHANGE", "MOTOR NOT AVAILABLE", "MOTOR PROBLEM", "NEW DOCK OPERATOR MISTAKE", "NEW DOCK OPERATOR SLEEP", "NOT OK",
+"OPERATOR MISTAKE", "OVERSIZE BILLET AT PUSHER SIDE", "PINCH ROLL BREAK", "PINCH ROLL GEAR BOX PROBLEM", "PINCH ROLL GUIDE BOX BREAK", "PULVERIZER COAL OVER",
+"PULVERIZER PROBLEM", "RAIN WATER FOLL ON MOTOR", "RHF BILLETS NOT SEND", "RHF BYPASS HOTOUT", "RHF HOLD DUE TO BILLET HOT OUT", "RHF LONG BILLETS SEND",
+"RHF RAIL PROBLEM", "RHF SUPERVISOR MISTAKE SO BILLET CAME LATE", "RHF TEMP LOW", "ROLL JAM", "SHUTDOWN MAINTENANCE", "SLOW ROLLING",
+"SLOW ROLLING DUE TO HEAD LOW TEMP", "SPARK IN BUS BAR", "STOP", "TEMP LOW", "TRIP", "TURNING TABLE PROBLEM",
+"WATER FALL ON LUB 1 TEMP SENSOR", "ROLL SHOP", "#1 chock support plate bolt break", "BEARING DAMAGE", "BEARING FAIL", "BEARING HEAT",
+"BEARING HEATED", "CHECK NUT LOOSE", "CONTAINER BOLT TIGHT", "CONTAINER BOULT LOOSE", "GREASE PIPE NOT READY", "PLAY IN ROLL",
+"ROLL DIA LET UPDATE", "ROLL GAP ADJUSMENT", "ROLL NOT READY", "ROLL OUT", "ROLL SETTING", "WATER PIPE PROBLEM",
+"WRONG STD DIAMETER SEND", "UTILITIES", "BLOWER PROBLEM", "CHANGED", "GREASE PIPE CHANGED", "LEAKAGE",
+"LUBRICATION FAULT", "NOT OK", "OPERATOR MISTAKE", "OVER CURRENT", "PIPE BREAK", "PRESSURE NOT OK",
+"PUMP PROBLEM", "SMALL WOOD PIECE PRESENT IN PIPLINE SO PIPE JAM","Other"
+],
+    electrical: ["COOLING BED", "2ND LAST AND LAST PIECE HIT IN APRON DUE TO SMALL BILLET", "ALIGNING PROBLEM", "BAR PRESSING PROBLEM", "BAR SEPARATION PROBLEM", "BAR STUCK",
+"BILLET LENGTH VARIATION SO UNDERSHOOT", "BLM PROBLEM", "BLV PROBLEM", "BUNDLE TYING MACHINE PROBLEM", "BY PASS CABLE INSTALLATION", "CABLE BURN",
+"CB CUTTING LENGTH CHANGE", "CLEARANCE", "COUNTER NOT WORK", "CU RESET", "CUTTING PROBLEM", "EXTRA LENGTH LAYER CUT",
+"FUSE BURN", "HMD FLICKER", "LAYER MIX", "MAGNET PROBLEM", "MATERIAL HIT", "MOTOR CHANGED",
+"MOTOR CHECKING", "MOTOR PROBLEM", "NOT OK", "OPERATOR MISTAKE", "OPERATOR NOT AVAILABLE", "OVERSHOOT AT COOLING B",
+"PROXY PROBLEM", "ROLLER TABLE OUT", "SETTING", "SMALL PIECE PRESENT IN DISSAPPERING STOPPER", "TRIP", "TROLLEY FALL DOWN",
+"TROLLEY TRIP", "TROLLEY UP", "UNDERSHOOT AT COOLING", "UNDERSHOOT DUE TO LAST CUT LESS THAN 15 METER", "UNSENSE",
+"MILL AREA", "AUTOMATION PROBLEM", "AUTOMATION PROBLEM OF PINCH ROLL", "AUTOMATION SCHEDULE PROBLEM", "BLOWER PROBLEM", "BYPASS TRANSFORMER CABLE HIT",
+"CABLE BURN", "CABLE SHORT", "CARBON BRUSH DAMAGE", "CARBON BRUSH INSPECTION", "CARBON BRUSH LEAD BREAK", "CARRY FORWARD",
+"CCM SIDE SIGNAL PROBLEM", "CHANGE", "CLEANED", "COBBLE IN LOOPER", "COMMUNICATION FAULT", "CREAN PROBLEM",
+"DELAY", "DID NOT TAKE HEAD CUT", "DRIVE TRIP", "DUE TO RHF TEMP LOW", "FLOW SWITCH FAULT", "FUSE DAMAGE",
+"HMD CONTINUE SENSE DUE TO SHEAR CUT CARRY INFRONT OF HMD", "HMD CONTINUOUS SENSE", "HMD NOT SENSE", "HYDRO MOTOR DIRECT", "JOINT BILLET", "JOINT BILLET",
+"LINE OUT", "LOCAL DESK BUTTON CHANGE", "LOOPER CONTINUE SENSE", "LOOPER FLICKER", "LOOPER SCANNER POSITION CHANGE DUE TO COBBLES MATERIAL FALL ON IT", "LOOPING",
+"LOOPING IN BETWEEN #12 & #13 SO LOOP SCANNER UNSENSE", "MATERIAL BREAK", "MATERIAL HIT", "MOTOR PROBLEM", "NEW SERVER INSTALLED", "NOT IN HOME POSITION",
+"NOT OK", "NOT READY", "OPERATOR MISTAKE", "OVER TORQUE", "PROXY PROBLEM", "ROLL BREAK",
+"RUN CONDITIONING MISSING", "SCHEDULE CHANGED", "SERVER DOWN", "SETTING", "SH01 TAIL SMALL PIECE CUT", "SH-1 TAKE HEAD CUT IS SHOWING IN IBA BUT FORMEN IS SAYING SH-1 HEAD IS NOT CUT",
+"TAIL LOOPING", "TAIL PIECE BREAK", "TAIL PIECE COBBLE", "TEMP NOT OK", "THYRISTOR FAIL", "TRIP",
+"UNCLAMP", "UNSENSE", "VCB PANEL INDUCTION TRANSFORMER CONTROL CABLE BURN", "VCB PANEL WORK DONE", "WATER FALL ON HMD", "WATER PUMP OFF",
+"WIREMAN NOT AVAILABLE", "PQS & DIVIDE SHEAR", "BLADE CHANGE", "BLOWER MOTOR SHORT", "CABLE BURN", "CUTTING NOT PROPER",
+"DELAY", "DIV SHEAR MISS CUT", "MATERIAL HIT", "NOT IN HOME POSITION", "NOT OK", "OVER CURRENT",
+"OVER TORQUE", "PQS PIPE BREAK SO WATER FALL ON HMD", "PROBLEM", "PROXY CHANGE", "PROXY PROBLEM", "SETTING",
+"TRIP", "PUMP HOUSE", "BREAKER TRIP", "PUMP HOUSE MAIN INCOMER CABLE BURN", "PUMP HOUSE WORK", "RHF & INDUCTION",
+"BILLET HOLDS SO DRIVE TRIP", "CRANE PROBLEM", "11 MOTOR DRIVE CHANGE", "11 MOTOR PUSHER NOT WORKING", "APPROACH ROLLER MOTOR CONNECTION", "AVG CHOPPING DUE TO TEMP LOW",
+"BILLET OVER HEAT", "BILLET FOLDED ON EJECTOR MOTOR CABLE SO CABLE SHORT", "BILLET STUCK", "BILLET STUCK ON 11 MOTOR", "BREAKER TRIP", "CABLE BURN",
+"CABLE BURN DUE TO FIRE", "COIL CHANGE", "CONVEYOR PROBLEM", "DM WATER TRIP", "DOCK DELAY", "DOCK TRIP",
+"DOG DELAY", "DRIVE TRIP", "DUE TO LOW TEMPERATURE TAIL BREAK", "HANUMAN ELECTRICIAN NOT PRESENT EJECTOR MOTOR TRIP", "JOINT BILLET", "LOOP IN RM DUE TO TEMP LOW",
+"MCB BURN", "MCB CHANGED", "MOTOR CABLE SHORT DUE TO HOTOUT", "MOTOR CHANGE", "MOTOR PROBLEM", "MOTOR TRIP",
+"NOT OK", "OPERATOR MISTAKE", "PLC MODULE DAMAGE", "PUSHER BELL NOT WORKING", "RHF TEMP LOW", "SPARK IN BUS BAR",
+"STOP", "TEMP LOW", "TRIP", "WIREMEN DELAY", "UTILITIES", "BUSBAR PROBLEM",
+"LUBRICATION FAULT", "MOTOR TRIP", "NOT OK", "TRIP", "VOLTAGE FLUCT/TRIP/OFF", "132 SUB STATION DELAY",
+"COOLING BED MAGNET TRIP", "DIV SH MISS CUT", "OIL FILLED IN TRANSFORMER", "TRIP", "VOLTAGE FLUCTUATION/POWER TRIP"
+,"Other"],
+        operational: [   "COOLING BED", "BILLET GAP IS LESS", "CUTTING PROBLEM", "CUTTING VARIATION", "MATERIAL HIT", "MATERIAL PALTI",
+"PLATE PROBLEM", "SETTING", "UNDERSHOOT AT COOLING", "GUIDE SHOP", "#18 ENTRY PROBLEM", "ENTRY PROBLEM",
+"NOT READY", "PIN LOOSE", "RILL BREAK", "MILL AREA", "#6 TRIP DUE TO SHIFT INCHARGE FORCE TO HOTOUT BILLET HEATUP SO BILLET TAIL TEMP LOW", "4MEN COMMUNICATION PROBLEM",
+"AVERAGE CHOPPING", "BEARING FAIL", "BEARING HEATED", "BILLET GAP IS LESS", "BILLET INTER IN STD 2 DUE TO HOTOUT FITTER NOT AVAILABLE", "BOLT BREAK",
+"CARRIER CHANGE", "CARRIER PROBLEM", "CASCADE WORK", "CHANGE", "CHILLI CHECKED IN", "COBBLE IN LOOPER",
+"COLLAR", "COUPLING PROBLEM ROLLSHOP", "DEL PIPE OUT", "DELAY", "DUE TO CHILLI", "ENTRY FALL DOWN",
+"ENTRY GUID BOX LOOSE", "ENTRY GUIDE BOX OUT", "EXTRAS TIGHT", "FAST STOP PRESS BY SOMEONE", "FITTER MISTAKE", "FLAPPER PLATE NOT OK",
+"FORMEN MISTAKE", "FORMEN TOLD RELEASE TENSION", "GULLI PRESENT", "HELPER MISTAKE", "HMD CONTINUE SENSE DUE TO SHEAR CUT CARRY INFRONT OF HMD", "HMD CONTIOUS SENSE",
+"HMD NOT SENSE", "HMD SENSE DUE TO SCALE PRESENT", "JOINT BILLET", "JOINT BILLET", "KNIFE BREAK", "KUNDI",
+"LESS GAP AVERAGE CHOPPING", "LINE OUT", "LOOP BETWEEN #18 AND PINCH ROLL", "LOOP SCANNER CONTINUE SENSE DUE TO SCALE PRESENT", "LOOPER CONTINUE SENSE", "LOOPER SCANNER SENCE DUE TO LOOPER PLATE TEMP",
+"LOOPING", "LOOPING IN BETWEEN #12 & #13 SO LOOP SCANNER UNSENES", "LOOSE", "MATERIAL BREAK", "MATERIAL FLAT", "MATERIAL HIT",
+"MATERIAL HIT IN DUMMY ROLLER", "MATERIAL HIT TO FLAPPER PLATE", "MATERIAL PALTI", "MATERIAL PRESENT", "MATERIAL SLIP", "MATERIAL TWIST",
+"NOSE BREAK", "NOSE LOOSE", "NOSE OUT", "NOT OK", "NOT SLIT", "NOZZLE OUT",
+"NUT BOLT LOOSE", "OPERATOR MISTAKE", "OVER STOCK SO LOOP", "OVER TORQUE", "OVERFIN", "PASS BREAK",
+"PASS CHANGE", "PIN OUT", "PIPING MATERIAL", "PLAY IN ROLL", "PREVIOUS PIPING MATERIAL PRESENT", "RILL BREAK",
+"RILL JAM", "ROLL BREAK", "ROLL CHANGE", "ROLL GAP ADJUSTMENT", "ROLL OUT", "SAMPLING",
+"SETTING", "SH-1 TAKE HEAD CUT IS SHOWING IN IBA BUT FORMEN IS SAYING SH-1 HEAD IS NOT CUT", "SINGLE PIECE LOOPING", "SIZE CHANGED FROM 10MM TO 12MM", "SIZE CHANGED FROM 10MM TO 16MM", "SIZE CHANGED FROM 10MM TO 20MM",
+"SIZE CHANGED FROM 10MM TO 25MM", "SIZE CHANGED FROM 10MM TO 32MM", "SIZE CHANGED FROM 10MM TO 8MM", "SIZE CHANGED FROM 12MM TO 10MM", "SIZE CHANGED FROM 12MM TO 16MM", "SIZE CHANGED FROM 12MM TO 20MM",
+"SIZE CHANGED FROM 12MM TO 25MM", "SIZE CHANGED FROM 12MM TO 32MM", "SIZE CHANGED FROM 12MM TO 8MM", "SIZE CHANGED FROM 16MM TO 10MM", "SIZE CHANGED FROM 16MM TO 12MM", "SIZE CHANGED FROM 16MM TO 20MM",
+"SIZE CHANGED FROM 16MM TO 25MM", "SIZE CHANGED FROM 16MM TO 32MM", "SIZE CHANGED FROM 16MM TO 40MM", "SIZE CHANGED FROM 16MM TO 8MM", "SIZE CHANGED FROM 20MM TO 10MM", "SIZE CHANGED FROM 20MM TO 12MM",
+"SIZE CHANGED FROM 20MM TO 16MM", "SIZE CHANGED FROM 20MM TO 25MM", "SIZE CHANGED FROM 20MM TO 32MM", "SIZE CHANGED FROM 20MM TO 8MM", "SIZE CHANGED FROM 25MM TO 10MM", "SIZE CHANGED FROM 25MM TO 12MM",
+"SIZE CHANGED FROM 25MM TO 16MM", "SIZE CHANGED FROM 25MM TO 20MM", "SIZE CHANGED FROM 25MM TO 32MM", "SIZE CHANGED FROM 25MM TO 8MM", "SIZE CHANGED FROM 28MM TO10MM", "SIZE CHANGED FROM 32 MM ROUND TO 32 MM",
+"SIZE CHANGED FROM 32MM TO 10MM", "SIZE CHANGED FROM 32MM TO 12MM", "SIZE CHANGED FROM 32MM TO 16MM", "SIZE CHANGED FROM 32MM TO 20MM", "SIZE CHANGED FROM 32MM TO 25MM", "SIZE CHANGED FROM 32MM TO 40MM",
+"SIZE CHANGED FROM 32MM TO 8MM", "SIZE CHANGED FROM 40MM TO 25MM", "SIZE CHANGED FROM 40MM TO 32MM", "SIZE CHANGED FROM 40MM TO 8MM", "SIZE CHANGED FROM 8/20 MM INTO 8 MM", "SIZE CHANGED FROM 8MM TO 10MM",
+"SIZE CHANGED FROM 8MM TO 12MM", "SIZE CHANGED FROM 8MM TO 16MM", "SIZE CHANGED FROM 8MM TO 20MM", "SIZE CHANGED FROM 8MM TO 25MM", "SIZE CHANGED FROM 8MM TO 32MM", "SLITTER BEARING FAIL",
+"SLITTER CHANGE", "SLITTER DRUM CHANGE", "SLITTER REEL BREAK", "TAIL LOOPING", "TAIL PIECE BREAK", "TAIL PIECE BREAK DUE TO CHILLI",
+"TAIL PIECE COBBLE", "TAIL PIECE COBBLE SO NEXT BILLET CHOPPING", "TEMP NOT OK", "TWISTER PIPE CHANGE", "UNCLAMP", "UNSENS DUE TO WATER FLOW SETTING",
+"UNSENSE", "WATER FALL ON HMD", "WATER OVERFLOW", "WATER PIPE OUT", "WATER PUMP OFF", "WATER SETTING",
+"WRONG CALL FROM R. MILL FITTER SO CHOPPING", "PIPING CCM", "AVG CHOPPING OF PIPING IN SH01", "DEL PIPE OUT", "DUE TO CHILLI", "PIPING MATERIAL",
+"PQS & DIVIDE SHEAR", "ARM BOLT BREAK", "ARM BOLT TIGHT", "BLADE CHANGE", "LOOP BETWEEN #18 AND PINCH ROLL", "MATERIAL HIT",
+"MATERIAL SLIP", "MATERIAL STOP NEAR PINCH ROLL", "NOT OK", "NOZZLE PIPE CHANGED", "PINCH ROLL LEAD DECREASED SO UNDERSHOOT", "PIPE LINE CHANGED",
+"SETTING", "WATER SETTING", "QUALITY", "DELAY", "NOT OK", "QUALITY NOT OK SO ROLL CHANGE",
+"SLOW ROLLING", "SLOW ROLLING DUE TO UNDER WEIGHT MATERIAL", "SPECIAL CUTTING","Other"],
+        other: ["CCM", "3RD STAND RUNNING", "3RD STAND TEMP LOW", "AVERAGE CHOPPING", "BEND BILLET", "BEND BILLET SHEAR MACHINE PROBLEM",
+"BILLET FALL DOWN CCM TURNING TABLE AND ALSO BEND BILLET SEND INDUCTION TABLE", "BILLET LENGTH NOT PROPER MATERIAL HIT STOPPER", "BILLET LENGTH MORE THAN 9 MTR", "BILLET NOT SEND", "BILLETS BAR SLIDE", "BREAK OUT",
+"CABLE BURN", "CAMERA NOT OK", "CCM BILLET TAIL NOT OK SO STUCK IN INDUCTION COIL", "CCM CASTING OVER", "CCM TEMP LOW", "CONVEYOR PROBLEM",
+"D MATERIAL CAME", "D MATERIAL HOTOUT", "D MATERIAL NOT CAME", "D MATERIAL OVER", "DELAY", "DOUBLE BILLET DUE TO CCM OPERATOR MISTAKE",
+"DOUBLE BILLET", "DUE TO LOW TEMP TAIL PIECE BREAK", "MATERIAL QUALITY NOT OK", "MILL CAPACITY MORE THAN CCM", "ONLY TWO STD RUNNING", "SIGNAL OFF",
+"SIGNAL OFF DUE TO PIPING MATERIAL CAME FROM CCM", "SIGNAL OFF CCM OPERATOR BILLET SEND", "SLOW ROLLING", "TURNING TABLE PROBLEM", "TURNING TABLE", "COOLING BED",
+"CAMERA HANG SO LAYER MIX", "ALIGNING PROBLEM", "BAR PRESSING PROBLEM", "BAR SEPARATION PROBLEM", "BAR SLIDING", "BAR STUCK IN ROLLER TABLE",
+"BLV PROBLEM", "BUNDLE TYING MACHINE PROBLEM", "C.B. SCHEDULE RECALL", "CABLE BURN", "CB CUTTING LENGTH CHANGE", "CLEARANCE",
+"COLD SHEAR BLADE PROBLEM", "CREAN PROBLEM", "CUTTING PROBLEM", "CUTTING VARIATION", "DOUBLE LAYER CUT", "HMD CONTINUOUS SENSE",
+"MATERIAL FLY", "MATERIAL HIT", "MATERIAL PALTI", "MATERIAL SLIP", "MCB CHANGED", "MELTING BOX FULL",
+"NOT OK", "OPTIMIZATION PROBLEM", "PLATE PROBLEM", "RAIN WATER FALL ON CONTROL BOX", "RANDOM CLEAR", "SANDU LABOUR NOT AVAILABLE",
+"SHORT BAR JAM", "SMALL PIECE PRESENT IN DISSAPPERING STOPPER", "TROLLEY UP", "UNDERSHOOT AT COOLING", "UNDERSHOOT DUE TO LAST CUT LESS THAN 15 METER", "MAINTENANCE SCHEDULE",
+"SHUTDOWN", "MILL AREA", "AVERAGE CHOPPING", "BEARING FAIL", "BILLET STUCK IN GUIDE", "BILLET STUCK ON ROLLER",
+"BILLET CUTTING BEFORE INDUCTION", "CARBON BRUSH INSPECTION", "CARBON BRUSH NOT AVAILABLE IN STORE SO", "CHILLI CHECKED IN", "COBBLE IN LOOPER", "COBBLE MATERIAL FALL ON LOOP SCANNER",
+"CREAN DELAY", "CREAN DRIVER NOT AVAILABLE", "CREAN PROBLEM", "D MATERIAL", "DEL PIPE OUT", "DELAY",
+"DID NOT TAKE HEAD CUT", "FLAPPER PLATE NOT OK", "HEAD & TAIL CUT SCRAP TRAP BOX FULL", "HMD CONTINUOUS SENSE", "HOTOUT BILLET NOT LIFT ON TIME", "HYDRO MOTOR DIRECT",
+"JOINT BILLET", "JOINT BILLET", "KUNDI", "LOOPER CONTINUE SENSE", "LOOPING", "MATERIAL BREAK",
+"MATERIAL HIT", "MATERIAL HIT TO FLAPPER PLATE", "MILL SETTING", "MOTOR PROBLEM", "NOT OK", "OVER CURRENT",
+"OVER TORQUE", "PIPING MATERIAL", "RAIN WATER FALL ON AIR VELOCITY DISPLAY", "ROLL BREAK", "SCHEDULE CHANGED", "SERVER DOWN",
+"SETTING", "SH-01 CHOPPING LEAD LESS SO NEXT BILLET HIT TO TAIL PIECE", "SINGLE PIECE LOOPING", "SIZE CHANGED FROM 20MM TO 8MM", "SIZE CHANGED FROM 8MM TO 20MM", "SNAPSHEAR PROBLEM",
+"SPECIAL CUTTING", "TAIL LOOPING", "TAIL PIECE BREAK", "TAIL PIECE COBBLE SO NEXT BILLET CHOPPING", "TEMP NOT OK", "UNCLAMP",
+"UNSENSE DUE TO WATER FLOW SETTING", "WATER OVERFLOW", "WATER PUMP OFF", "PIPING CCM", "AVG CHOPPING OF PIPING IN SH01", "DEL PIPE OUT",
+"DUE TO CHILLI", "MATERIAL BREAK", "PIPING MATERIAL", "PREVIOUS PIPING MATERIAL PRESENT", "TAIL PIECE BREAK", "PIPING RHF",
+"DEL PIPE OUT", "PIPING MATERIAL", "PREVIOUS PIPING MATERIAL PRESENT", "TAIL PIECE BREAK", "PQS & DIVIDE SHEAR", "DELAY",
+"LOOP BETWEEN #18 AND PINCH ROLL", "MATERIAL HIT", "NOT OK", "TRIP", "WATER SETTING", "QUALITY",
+"DELAY", "LAYER SEPARATE", "SETTING", "SLOW ROLLING", "SPECIAL CUTTING", "R&D",
+"10X5 MM TRIAL", "8/20 MM TRIAL", "BLOWER WORK (MECH)", "BYPASS MOTOR TRIAL", "DELAY", "INDUCTION PANEL SHIFTING",
+"NEW INDUCTION ROLLER TABLE AND DOCK R&D", "TRIAL", "TRANSFORMER TRIAL", "RHF & INDUCTION", "CRANE PROBLEM", "CRANE PROBLEM",
+"2 BILLET CAME OUT FROM RHF", "2 BILLET SEND FROM CCM", "3 NO CONVEYOR MOTOR PROBLEM", "BEND BILLET", "BILLET STUCK", "BILLET CUTTING NEAR INDUCTION",
+"BILLET FOLDED ON EJECTOR MOTOR CABLE SO CABLE SHORT", "BILLET NOT SEND", "BILLET STUCK", "BILLET STUCK IN EXIT GATE", "BILLET STUCK INDUCTION COIL", "BILLET STUCK ON 11 MOTOR",
+"BREAKER TRIP", "CABLE BREAK DUE TO CRANE", "CABLE BURN", "CABLE BURN DUE TO FIRE", "CIVIL FOUNDATION BREAK", "CIVIL WORK",
+"COAL LABOUR/HELPER NOT AVAILABLE", "CRANE DRIVER AND MILL SUPERVISOR NOT AVAILABLE SO STUCK BILLET NOT LIFT UP AND CCM SIDE HOTOUT", "CRANE NOT AVAILABLE", "CRS MATERIAL CAME", "CRS MATERIAL OVER", "D MATERIAL CAME",
+"D MATERIAL NOT CAME", "D MATERIAL OVER", "DOG DELAY", "DUE TO BILLET HOTOUT PROBLEM", "DUE TO HOT OUT MOTOR HEAT", "DUE TO LOW TEMPERATURE TAIL BREAK", "DUST FALL ON BILLETS",
+"EXTRA DRIVE REMOVE FROM INDUCTION PULPIT FOR BYPASS PURPOSE", "HOT OUT BILLET FALL DOWN ON 11 MOTOR TABLE", "INDUCTION ONE COIL RUNNING", "LONG BILLETS AT PUSHER SIDE", "MATERIAL QUALITY NOT OK", "MOTOR CABLE SHORT DUE TO HOTOUT",
+"MOTOR PROBLEM", "NEW DOCK OPERATOR MISTAKE", "NEW DOCK OPERATOR SLEEP", "NOT OK", "OPERATOR MISTAKE", "OVERSIZE BILLET AT PUSHER SIDE",
+"RAIN WATER FALL ON MOTOR", "RHF BILLETS NOT SEND", "RHF BILLETS OVER", "RHF HOLD DUE TO BILLET HOT OUT", "RHF TEMP LOW", "SHUTDOWN MAINTENANCE",
+"STOP", "TEMP LOW", "SPECIAL GRADE", "SPECIAL CUTTING"
+, "Other"]
+  };
+
+  // Function to update reason dropdown
+  function updateReasons() {
+      const selectedDepartment = responsibleDepartment.value;
+      const options = reasons[selectedDepartment] || [];
+
+      // Reset the options and add the default option
+      reason.innerHTML = '<option value="">Select Reason</option>';
+
+      // Create and append new options
+      options.forEach(reasonOption => {
+          const optionElement = document.createElement("option");
+          optionElement.value = reasonOption;
+          optionElement.textContent = reasonOption;
+          reason.appendChild(optionElement);
+      });
+
+      // Hide the reason input initially
+      reasonInputContainer.style.display = "none";
+  }
+
+  // Add event listener for department dropdown change
+  responsibleDepartment.addEventListener("change", updateReasons);
+
+  // Add event listener for reason dropdown change
+  reason.addEventListener("change", function() {
+      if (reason.value === "Other") {
+          reasonInputContainer.style.display = "block";
+      } else {
+          reasonInputContainer.style.display = "none";
+      }
+  });
+
+
+
+
+
+
+  // Remove pop up after clicking close button
+  closePopup.addEventListener("click", function() {
+      myPopup.classList.remove("show");
+  });
+
+  const socket = io();
+
+  socket.on('new_event', function(data) {
+      // Update the popup content with the received data
+      document.getElementById("eventName").textContent = data.event_name;
+      document.getElementById("eventTimeStart").textContent = data.event_start;
+      document.getElementById("eventTimeStop").textContent = data.event_stop;
+      document.getElementById("delayTime").textContent = data.time_delay;
+      myPopup.classList.add("show");  // Display the popup
+  });
+</script>
+
+<!-- pop-script-end  -------------------------------------->
+
+
+  <script>
+
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+      // Sidebar toggle button functionality
+      document.querySelector('.btn-bar').addEventListener('click', function() {
+        this.classList.toggle("click");
+        document.querySelector('.d-sidebar').classList.toggle("show");
+      });
+
+      // Dropdown button functionality
+      document.querySelectorAll('.feat-btn').forEach(function(button){
+        button.addEventListener('click', function(){
+          this.nextElementSibling.classList.toggle("show");
+          this.querySelector('.first').classList.toggle("rotate");
+        });
+      });
+
+      // Active class functionality for sidebar options
+      document.querySelectorAll('.d-option').forEach(function(item){
+        item.addEventListener('click', function(){
+          document.querySelectorAll('.d-option').forEach(function(element){
+            element.classList.remove("active");
+          });
+          this.classList.add("active");
+        });
+      });
+
+      // Hide sidebar after clicking anywhere outside
+      document.addEventListener('click', function(event){
+        const sidebar = document.querySelector('.d-sidebar');
+        const btn = document.querySelector('.btn-bar');
+        if (!sidebar.contains(event.target) && !btn.contains(event.target)){
+          sidebar.classList.remove("show");
+          btn.classList.remove("click");
+        }
+      });
+
+      // Sidebar and footer toggle functionality using jQuery
+      $(document).ready(function() {
+        $(".btn-bar").click(function() {
+          $(".d-sidebar").toggleClass("open");
+          $(".d-sidebar-footer").toggleClass("show");
+        });
+      });
+
+      // Update current date and time
+      function updateDateTime() {
+        const currentdate = document.getElementById('currentdate');
+        const now = new Date();
+        const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+        const month = months[now.getMonth()];
+        const date = now.getDate();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+        const dateTimeString = `${date} ${month} ${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        currentdate.textContent = dateTimeString;
+      }
+
+      updateDateTime();
+      setInterval(updateDateTime, 1000);
+    });
+
+    // Dashboard ratings animation
+    const rating = document.getElementsByClassName('rating')[0];
+    const block = document.getElementsByClassName('block');
+    const timePercentage = Math.floor((hoursPassed() / 24) * 100);
+    for (var i = 0; i < 100; i++) {
+      rating.innerHTML += "<div class='block'></div>";
+      block[i].style.transform = "rotate(" + (3.6 * i) + "deg)";
+      block[i].style.animationDelay = `${i / 100}s`;
+      if (i < timePercentage) {
+        block[i].classList.add('highlight');
+      }
+    }
+
+    // Calculate total hours passed
+    function hoursPassed() {
+      let currentTime = new Date();
+      let startTime = new Date();
+      startTime.setHours(0);
+      startTime.setMinutes(0);
+      startTime.setSeconds(0);
+      startTime.setMilliseconds(0);
+      let timeDifference = currentTime - startTime;
+      var hours = Math.floor(timeDifference / (1000 * 60 * 60));
+      return hours;
+    }
+
+    // Update HTML content with total hours passed
+    document.addEventListener("DOMContentLoaded", function () {
+      var hours = hoursPassed();
+      var timePassedElements = document.querySelectorAll(".total-time");
+      timePassedElements.forEach(function (element) {
+        element.textContent = hours + " hrs";
+      });
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

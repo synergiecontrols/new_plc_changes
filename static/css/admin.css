@@ -1,0 +1,103 @@
+
+.admin-card-production{
+    position:relative ;
+    width: 80%;
+    height: 20rem;
+    border-radius: 6px;
+    background-color:lightcyan;
+    box-shadow: 8px 10px 8px rgb(0 0 0 / 23%);
+    border: 1px solid rgb(196, 221, 221);
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    height: 10rem;
+    align-items: center;
+
+
+
+
+
+}
+
+.admin-card-production hr{
+    padding: 0;
+    margin: 0;
+    color: steelblue;
+    height: 2px;
+    filter: blur(1px);
+}
+
+.admin-button{
+    display: flex;
+    justify-content: center;
+    margin-bottom:1rem;
+  }
+  
+
+
+  
+.adminbuttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+}
+.adminbuttons a {
+    margin: 5px;
+    padding: 10px 50px;
+ 
+}
+
+
+.admin-section-strip{
+
+    width:100%;
+    height:0.5rem;
+    background: linear-gradient(to bottom right, #fff 30%, #da3c3c 70%);
+    margin-top:20px ;
+    margin-bottom:30px ;
+}
+
+
+
+
+
+
+/* user management*/
+  .select-class {
+            width: 200px; /* Adjust the width as needed */
+            padding: 10px; /* Add some padding */
+            font-size: 16px; /* Adjust the font size */
+            border: 1px solid #ccc; /* Add a border */
+            border-radius: 5px; /* Round the corners */
+            background-color: #f9f9f9; /* Set a background color */
+            color: #333; /* Set the text color */
+            appearance: none; /* Remove the default arrow */
+            -webkit-appearance: none; /* Remove the default arrow in Safari */
+            -moz-appearance: none; /* Remove the default arrow in Firefox */
+            
+            background-repeat: no-repeat;
+            background-position: right 10px top 50%;
+            background-size: 10px;
+        }
+
+        /* Style for the options */
+        .select-class option {
+            padding: 10px; /* Add some padding to the options */
+            font-size: 16px; /* Adjust the font size */
+        }
+        .add_new_user{
+
+            padding: 10px;
+            margin-bottom: 5px;
+        }
+
+
+        .overview{
+            display: flex;
+            justify-content: center;
+            margin-top: 5%;
+            font-size: 3rem;
+            align-items: center;
+            width: 100%;
+        }

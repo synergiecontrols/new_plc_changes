@@ -1,0 +1,480 @@
+
+    /* Define custom properties for colors */
+    :root {
+        --primary-color: #4592c5; /* Define primary color */
+        --secondary-color: #1d6291; /* Define secondary color */
+        --text-color: #fff; /* Define text color */
+        --accent-color: cyan; /* Define accent color */
+        --font-family: 'Poppins', sans-serif; /* Define font family */
+        --logo-shadow-color:black;
+        --text-color2 : black;
+      }
+  
+      
+      /* Import Google Fonts */
+      @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+      
+      /* Global styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: var(--font-family); /* Use custom font family */
+      }
+  
+      
+      /* Button styles */
+      .btn-bar {
+        position: fixed;
+        margin-top: 10vh;
+        top: 15px;
+        left: 1rem;
+        height: 2.3rem;
+        width: 2.3rem;
+        text-align: center;
+        background: var(--primary-color); /* Set background color */
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: left 0.4s ease; /* Add transition effect */
+        z-index: 999;
+      }
+      
+      /* Adjust button position after clicking */
+      .btn-bar.click {
+        left: 36vh;
+      }
+      
+      /* Button icon styles */
+      .btn-bar span {
+        color: var(--text-color); /* Set icon color */
+        font-size: 1.5rem;
+        line-height: 2.4rem;
+      }
+      
+      /* Change icon when button is clicked */
+      .btn-bar.click span:before {
+        content: '\f00d';
+      }
+      
+      /* Sidebar styles */
+      .d-sidebar {
+        position: fixed;
+        margin-top: 1vh;
+        width: 35vh;
+        z-index: 2;
+        height: 90vh;
+        left: -35vh;
+        background: var(--primary-color); /* Set background color */
+        transition: left 0.4s ease; /* Add transition effect */
+  
+      }
+      
+      /*sidebar show animation */
+      .d-sidebar.show {
+        left: 0; /* Move d-sidebar into view */
+        overflow-y: scroll;
+      }
+  
+      .d-sidebar.show::-webkit-scrollbar {
+        display:none; /* Hide scrollbar */
+      }
+      
+      /* sidebar text styles */
+  
+      
+      .d-sidebar {
+        position: fixed; /* Ensure .d-sidebar is fixed for positioning the sticky element */
+    
+      }
+  
+      .d-sidebar .text-sidebar {
+    
+        color: var(--text-color); /* Set text color */
+        font-size: 1.5rem;
+        font-weight: 600;
+        line-height: 3rem;
+        text-align: center;
+        background: var(--secondary-color); /* Set background color */
+        letter-spacing: 1px;
+        position: sticky;
+        top: 0; /* Stick to the top of the .d-sidebar */
+        z-index: 1;
+        
+  
+      }
+  
+      
+     
+      
+      
+      /* Navigation menu styles */
+      nav ul {
+        background: var(--primary-color); /* Set background color */
+        height: 100%;
+        width: 100%;
+        list-style: none;
+        padding: 0;
+      }
+      
+      /* Navigation menu item styles */
+      nav ul li {
+        line-height: 60px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 0;
+      }
+      
+      /* Last navigation menu item styles */
+      nav ul li:last-child {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      
+      /* Navigation menu link styles */
+      nav ul li a {
+        padding: 0;
+        position: relative;
+        color: var(--text-color); /* Set text color */
+        text-decoration: none;
+        font-size: 1.2em;
+        padding-left: 20px;
+        font-weight: 500;
+        display: block;
+        width: 100%;
+        border-left: 3px solid transparent;
+      }
+      
+      /* Active navigation menu item styles */
+      nav ul li.active a {
+        color: var(--accent-color); /* Set accent color */
+        background: var(--secondary-color); /* Set background color */
+        border-left-color: var(--accent-color); /* Set border color */
+      }
+      
+      /* Hover effect on navigation menu items */
+      nav ul li a:hover {
+        color: var(--accent-color); /* Set accent color */
+        background: var(--secondary-color); /* Set background color *
+  
+        /* border-radius: 10px;
+        margin-left: 10px;
+        margin-right: 20px; */
+      }
+      
+      /* Submenu styles */
+      nav ul ul {
+        position: static;
+        display: none;
+      }
+      
+      /* Show submenu */
+      nav ul .feat-show.show {
+        display:inline-block;
+      }
+      
+      /* Active state for dropdown options */
+      .d-option.active {
+        background-color: var(--secondary-color); /* Set background color */
+      }
+     
+      /* Submenu item styles */
+      nav ul ul li {
+        line-height: 42px;
+        border-top: none;
+      }
+      
+      /* Submenu link styles */
+      nav ul ul li a {
+        font-size: 1em;
+        color: var(--text-color);
+        padding-left: 60px;
+      }
+      
+      /* Active state for submenu items */
+      nav ul li.active  {
+        color: var(--text-color);
+        background: var(--primary-color); /* Set background color */
+        border-left-color: transparent;
+      }
+      
+      /* Hover effect on submenu links */
+      nav ul ul li a:hover {
+        color: var(--accent-color) !important; /* Set accent color */
+        background: var(--secondary-color) !important; /* Set background color */
+      }
+      
+      /* Navigation menu icon styles */
+      nav ul li a span {
+        position: absolute;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+        font-size: 22px;
+        transition: transform 0.4s;
+      }
+      
+      /* Rotate navigation menu icon */
+      nav ul li a span.rotate {
+        transform: translateY(-50%) rotate(-180deg);
+      }
+      
+  
+      .navbar-custom{
+        /* background: linear-gradient(to left,  var(--primary-color) 80%, var(--text-color) 20%); */
+        background-image: linear-gradient(to bottom right,var(--text-color)30%, var(--primary-color) 70%);
+      color: var(--text-color2) !important;
+      font-weight:600 ;
+      border:2px var(--primary-color)  solid ;
+      height: 10.5vh;
+      display: flex;
+      flex-direction: row-reverse;
+      box-shadow: 0 4px 6px rgb(176, 209, 233);
+      }
+      .nav-logo img {
+        width: 7.5rem; /* Set the width of the image */
+        height: 3.75rem; /* Set the height of the image */
+        padding-left: 10px;
+        font-size: larger;
+      }
+
+
+
+  /* 
+  #currentdate{
+    
+  } */
+  
+  
+   .sidebar-divider{
+    color:var(--text-color);
+    height:2px;
+  
+  }
+  
+      .d-sidebar-footer {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        line-height: 3rem;
+        color: var(--text-color);
+        align-content: flex-end;
+        margin-bottom: 1vh;
+        padding-right: 1.5rem;
+        /* justify-content: space-evenly; */
+        align-items: center;
+    }
+     
+     .sidebar-divider{
+        margin-top: 25vh;
+  
+     }
+      .setting,
+      .profile {
+        cursor: pointer;
+        padding: 4px 0px;
+        margin-bottom: 60px;
+      }
+  
+      a.active{
+        color: var( --accent-color);
+      }
+  
+      .profile{
+        padding-right: 4px;
+      }
+      
+      .d-sidebar-footer.show {
+        display: flex;
+      }
+  
+      @media screen and (max-width: 768px) {
+        .d-sidebar {
+          width: 65vw;
+          left: -65vw;
+        }
+  
+        .btn-bar {
+          left: 10px;
+          height: 2rem;
+        width: 2rem;
+  
+        }
+  
+        .btn-bar.click {
+          left: 66vw;
+        }
+  
+  
+        .btn-bar span {
+          color: var(--text-color); /* Set icon color */
+          font-size: 1rem;
+          line-height: 2rem;
+        }
+  
+  
+        
+        nav ul li {
+          line-height: 40px;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          padding: 0;
+      }
+  
+  
+        nav ul ul li a {
+          font-size: 1em; /* Increase font size */
+          padding: 2px 3rem; /* Adjust submenu link padding */
+        }
+  
+        .sidebar-divider{
+          margin-top: 38vh;
+    
+       }
+      }
+  
+  
+      .button{
+        position: relative;
+        margin-top: 1rem;
+      }
+  
+  
+  /* ---------------------------------------------------------------------------------------------------- */
+  
+  .levitate-body {
+    position: fixed;
+    top: 88vh;
+    right: 0vh;
+    height: 60px;
+    width: 200px;
+   
+    cursor: pointer;
+  }
+  
+  .levitate-body:after {
+    content: '____________________';
+    margin: 0;
+    color:var(--primary-color);
+    
+    filter: blur(2px);
+  }
+  
+  .logo {
+    border-radius:6px;
+    height: 40px;
+    width: 180px;
+    background-color:var(--primary-color);
+    text-align: center;
+    margin-bottom: 20px;
+    overflow: hidden;
+    display: inline-block;
+  }
+  
+  .levitate span {
+    color: #fff;
+    font: 600 25px Tahoma;
+    text-shadow: 0px 0px var(--logo-shadow-color), 1px 1px var(--logo-shadow-color), 2px 2px var(--logo-shadow-color), 3px 3px var(--logo-shadow-color), 4px 4px var(--logo-shadow-color), 5px 5px var(--logo-shadow-color), 6px 6px var(--logo-shadow-color), 7px 7px var(--logo-shadow-color), 8px 8px var(--logo-shadow-color), 9px 9px var(--logo-shadow-color), 10px 10px var(--logo-shadow-color);
+  }
+  
+  .levitate {
+    animation-name: levitate;
+    animation-duration: 2.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out ease-in-out;
+  }
+  
+  @keyframes levitate {
+    from {
+      -webkit-transform: translate(0, 0px);
+    }
+    45% {
+      -webkit-transform: translate(0, 20px);
+    }
+    to {
+      -webkit-transform: translate(0, -0px);
+    }
+  }
+  
+  
+  
+  
+  
+  /* -----------------------------------feedback-logo-for-mobile-screens----------------------------------- */
+  
+  @media screen and (max-width: 768px) {
+  
+    .levitate-body {
+    
+      right: -9vh;
+    }
+  
+    .levitate span {
+      font: 400 1rem Tahoma;
+    }
+    .logo{
+      height: 30px;
+      width: 100px;
+    }
+  
+    .levitate-body:after {
+    
+      content: '___________';
+    }
+    
+  }
+  
+  /* auth- buttons --------------------------------------------- */
+
+  .auth-button a {
+    background-color: #00d5ff;
+    color: #fff;
+    text-decoration: none;
+    padding: 5px;
+    margin-right: 10px;
+    border: 1px solid rgb(22, 75, 85);
+    border-radius: 4px;
+    transition: background-color 0.5s, color 0.5s;
+ }
+ 
+ .auth-button a:hover {
+     background-color: #fff;
+     color: #00d5ff;
+     cursor: pointer;
+ }
+ 
+ .nav-link-last {
+     display: flex;
+ }
+ 
+
+
+
+
+    /* auth- buttons --------------------------------------------- */
+  
+  
+  .footer{
+    
+  margin-top: 1rem;
+  margin-bottom: 0%;
+  height:7rem;
+  background-color: var(--secondary-color);
+  text-align: center;
+  color:var(--text-color);
+  line-height: 7rem;
+  }
+
+
+/* ------------------------------------------------------------------------notification-icon------------- */
+
+.notification{
+  position: relative;
+
+}
+.notification-icon {
+
+  font-size: 24px;
+  cursor: pointer;
+   margin:0 10px; 
+  color:#fff;
+}
+
+
+  
